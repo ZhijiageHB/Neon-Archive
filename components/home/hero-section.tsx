@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { FloatingDashboard } from "@/components/ui/floating-dashboard";
 import { MagneticButton } from "@/components/ui/magnetic-button";
-import { SplitText } from "@/components/ui/split-text";
+import { springs } from "@/lib/animations";
 
 const cyclingWords = ["interfaces", "systems", "stories", "experiments"];
 
@@ -23,42 +23,79 @@ export function HeroSection({ recentPosts = [] }: HeroSectionProps) {
     return () => clearInterval(interval);
   }, []);
 
+  const container = {
+    hidden: {},
+    show: {
+      transition: { staggerChildren: 0.12, delayChildren: 0.2 },
+    },
+  };
+
+  const item = {
+    hidden: { opacity: 0, y: 40, filter: "blur(8px)" },
+    show: { opacity: 1, y: 0, filter: "blur(0px)", transition: springs.gentle },
+  };
+
   return (
-    <section className="relative min-h-[85vh] flex items-center">
+    <section className="relative min-h-[85vh] flex items-center overflow-hidden">
+      {/* Animated gradient orb */}
+      <motion.div
+        className="absolute top-1/4 right-1/4 w-[500px] h-[500px] rounded-full opacity-30 pointer-events-none"
+        style={{
+          background: "radial-gradient(circle, rgba(124,58,237,0.15) 0%, rgba(6,182,212,0.08) 50%, transparent 70%)",
+        }}
+        animate={{
+          x: [0, 30, -20, 0],
+          y: [0, -20, 30, 0],
+          scale: [1, 1.1, 0.95, 1],
+        }}
+        transition={{
+          duration: 12,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+
       <div className="mx-auto max-w-6xl px-6 pt-28 pb-16 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <motion.div
+          className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center"
+          variants={container}
+          initial="hidden"
+          animate="show"
+        >
           {/* Left: Title */}
           <div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                type: "spring",
-                stiffness: 100,
-                damping: 20,
-              }}
-              className="mb-4"
-            >
-              <span className="inline-block px-3 py-1 rounded-full bg-brand-purple/8 text-brand-purple text-xs font-mono">
+            {/* Badge */}
+            <motion.div variants={item} className="mb-5">
+              <motion.span
+                className="inline-block px-3.5 py-1 rounded-full bg-brand-purple/8 text-brand-purple text-xs font-mono"
+                whileHover={{ scale: 1.05 }}
+              >
                 personal archive
-              </span>
+              </motion.span>
             </motion.div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.08] mb-6">
-              <SplitText text="I design and build" delay={0.1} />
+            {/* Main heading */}
+            <motion.h1
+              variants={item}
+              className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.08] mb-6"
+            >
+              <motion.span
+                className="inline-block"
+                initial={{ opacity: 0, x: -30, filter: "blur(10px)" }}
+                animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+                transition={{ ...springs.gentle, delay: 0.3 }}
+              >
+                I design and build
+              </motion.span>
               <br />
-              <span className="relative inline-block h-[1.15em] overflow-hidden align-bottom">
+              <span className="relative inline-block h-[1.2em] overflow-hidden align-bottom">
                 <AnimatePresence mode="wait">
                   <motion.span
                     key={currentWord}
-                    initial={{ y: 40, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    exit={{ y: -40, opacity: 0 }}
-                    transition={{
-                      type: "spring",
-                      stiffness: 200,
-                      damping: 25,
-                    }}
+                    initial={{ y: 50, opacity: 0, scale: 0.9, filter: "blur(6px)" }}
+                    animate={{ y: 0, opacity: 1, scale: 1, filter: "blur(0px)" }}
+                    exit={{ y: -50, opacity: 0, scale: 1.1, filter: "blur(6px)" }}
+                    transition={{ type: "spring", stiffness: 250, damping: 22 }}
                     className="gradient-text absolute"
                   >
                     {cyclingWords[currentWord]}
@@ -66,35 +103,27 @@ export function HeroSection({ recentPosts = [] }: HeroSectionProps) {
                 </AnimatePresence>
               </span>
               <br />
-              <SplitText text="that feel alive." delay={0.3} />
-            </h1>
+              <motion.span
+                className="inline-block"
+                initial={{ opacity: 0, x: -30, filter: "blur(10px)" }}
+                animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+                transition={{ ...springs.gentle, delay: 0.5 }}
+              >
+                that feel alive.
+              </motion.span>
+            </motion.h1>
 
+            {/* Description */}
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                delay: 0.5,
-                type: "spring",
-                stiffness: 100,
-                damping: 20,
-              }}
+              variants={item}
               className="max-w-md text-text-secondary text-lg leading-relaxed mb-10"
             >
               A personal archive exploring interfaces, systems, and ideas.
               Building tools at the intersection of craft and code.
             </motion.p>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                delay: 0.6,
-                type: "spring",
-                stiffness: 100,
-                damping: 20,
-              }}
-              className="flex items-center gap-4"
-            >
+            {/* CTAs */}
+            <motion.div variants={item} className="flex items-center gap-4">
               <MagneticButton href="/blog" variant="primary">
                 Read the blog
                 <ArrowRight size={15} />
@@ -106,10 +135,32 @@ export function HeroSection({ recentPosts = [] }: HeroSectionProps) {
           </div>
 
           {/* Right: Floating Dashboard */}
-          <div className="hidden lg:block">
+          <motion.div
+            className="hidden lg:block"
+            initial={{ opacity: 0, x: 60, filter: "blur(12px)" }}
+            animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+            transition={{ ...springs.gentle, delay: 0.6 }}
+          >
             <FloatingDashboard recentPosts={recentPosts} />
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
+
+        {/* Scroll indicator */}
+        <motion.div
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.5 }}
+        >
+          <span className="text-[10px] font-mono text-text-muted uppercase tracking-widest">
+            scroll
+          </span>
+          <motion.div
+            className="w-px h-8 bg-gradient-to-b from-brand-purple/60 to-transparent"
+            animate={{ scaleY: [1, 0.5, 1] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          />
+        </motion.div>
       </div>
     </section>
   );

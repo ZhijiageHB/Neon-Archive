@@ -1,6 +1,5 @@
-import { getPublishedPostsPaginated, getPostMetrics } from "@/lib/supabase/queries";
+import { getPublishedPostsPaginated, getPostMetricsBatch } from "@/lib/supabase/queries";
 import { PostCard } from "./post-card";
-import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { Pagination } from "@/components/ui/pagination";
 
 interface PostListProps {
@@ -34,33 +33,33 @@ export async function PostList({ page = 1, pageSize = 10 }: PostListProps) {
     );
   }
 
-  const postsWithMetrics = await Promise.all(
-    posts.map(async (post) => {
-      try {
-        const metrics = await getPostMetrics(post.slug);
-        return { ...post, ...metrics };
-      } catch {
-        return { ...post, views: 0, likes: 0 };
-      }
-    })
-  );
+  const slugs = posts.map((p) => p.slug);
+  const metricsList = slugs.length > 0
+    ? await getPostMetricsBatch(slugs).catch(() => [])
+    : [];
+  const metricsMap = new Map(metricsList.map((m) => [m.slug, m]));
+
+  const postsWithMetrics = posts.map((post) => {
+    const m = metricsMap.get(post.slug);
+    return { ...post, views: m?.views ?? 0, likes: m?.likes ?? 0 };
+  });
 
   const totalPages = Math.ceil(total / pageSize);
 
   return (
     <div>
       {postsWithMetrics.map((post, i) => (
-        <ScrollReveal key={post.id} delay={i * 0.05}>
-          <PostCard
-            slug={post.slug}
-            title={post.title}
-            excerpt={post.excerpt}
-            published_at={post.published_at}
-            tags={post.tags}
-            views={post.views}
-            likes={post.likes}
-          />
-        </ScrollReveal>
+        <PostCard
+          key={post.id}
+          slug={post.slug}
+          title={post.title}
+          excerpt={post.excerpt}
+          published_at={post.published_at}
+          tags={post.tags}
+          views={post.views}
+          likes={post.likes}
+          index={i}
+        />
       ))}
       <Pagination currentPage={page} totalPages={totalPages} />
     </div>
