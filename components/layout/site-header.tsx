@@ -1,0 +1,118 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Menu, X } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+const links = [
+  { href: "/", label: "Home" },
+  { href: "/blog", label: "Blog" },
+  { href: "/guestbook", label: "Guestbook" },
+  { href: "/about", label: "About" },
+];
+
+export function SiteHeader() {
+  const pathname = usePathname();
+  const [open, setOpen] = useState(false);
+
+  return (
+    <header className="fixed top-0 left-0 right-0 z-50">
+      <div className="mx-auto max-w-5xl px-6 py-4">
+        <nav className="flex items-center justify-between rounded-xl glass px-5 py-3">
+          <Link
+            href="/"
+            className="text-lg font-bold tracking-tight text-text-primary hover:opacity-80 transition-opacity"
+          >
+            <span className="gradient-text">Neon</span> Archive
+          </Link>
+
+          {/* Desktop */}
+          <ul className="hidden md:flex items-center gap-1">
+            {links.map((link) => {
+              const isActive =
+                link.href === "/"
+                  ? pathname === "/"
+                  : pathname.startsWith(link.href);
+              return (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className={cn(
+                      "relative px-3.5 py-1.5 text-sm rounded-lg transition-colors",
+                      isActive
+                        ? "text-text-primary"
+                        : "text-text-secondary hover:text-text-primary"
+                    )}
+                  >
+                    {isActive && (
+                      <motion.span
+                        layoutId="nav-highlight"
+                        className="absolute inset-0 rounded-lg bg-white/[0.06]"
+                        transition={{
+                          type: "spring",
+                          stiffness: 350,
+                          damping: 30,
+                        }}
+                      />
+                    )}
+                    <span className="relative z-10">{link.label}</span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+
+          {/* Mobile toggle */}
+          <button
+            onClick={() => setOpen(!open)}
+            className="md:hidden p-1.5 text-text-secondary hover:text-text-primary transition-colors"
+            aria-label={open ? "Close menu" : "Open menu"}
+          >
+            {open ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </nav>
+
+        {/* Mobile menu */}
+        <AnimatePresence>
+          {open && (
+            <motion.div
+              initial={{ opacity: 0, y: -8, height: 0 }}
+              animate={{ opacity: 1, y: 0, height: "auto" }}
+              exit={{ opacity: 0, y: -8, height: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+              className="md:hidden overflow-hidden mt-2 rounded-xl glass"
+            >
+              <ul className="p-3 flex flex-col gap-1">
+                {links.map((link) => {
+                  const isActive =
+                    link.href === "/"
+                      ? pathname === "/"
+                      : pathname.startsWith(link.href);
+                  return (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        onClick={() => setOpen(false)}
+                        className={cn(
+                          "block px-4 py-2.5 text-sm rounded-lg transition-colors",
+                          isActive
+                            ? "text-text-primary bg-white/[0.06]"
+                            : "text-text-secondary hover:text-text-primary hover:bg-white/[0.03]"
+                        )}
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </header>
+  );
+}

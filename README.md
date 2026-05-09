@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Neon Archive
+
+A dark, futuristic personal website and technical blog built with Next.js, Supabase, and Framer Motion.
+
+## Tech Stack
+
+- **Framework**: Next.js (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS v4
+- **Animation**: Framer Motion
+- **Database**: Supabase (PostgreSQL)
+- **Deployment**: Vercel
 
 ## Getting Started
 
-First, run the development server:
+### 1. Install dependencies
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Set up Supabase
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Create a project at [supabase.com](https://supabase.com)
+2. Go to **SQL Editor** in your Supabase dashboard
+3. Copy the contents of `supabase/schema.sql` and run it
+4. Go to **Project Settings → API** and copy your:
+   - **Project URL**
+   - **anon public** key
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 3. Configure environment variables
 
-## Learn More
+Create `.env.local` in the project root:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+NEXT_PUBLIC_SUPABASE_URL=your_project_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 4. Run the development server
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+pnpm dev
+```
 
-## Deploy on Vercel
+Open [http://localhost:3000](http://localhost:3000).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Deploy to Vercel
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Push this repo to GitHub
+2. Import the project on [vercel.com](https://vercel.com)
+3. Set the environment variables:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+4. Deploy
+
+## Project Structure
+
+```
+app/                    # Next.js App Router pages
+  blog/                 # Blog list and [slug] pages
+  guestbook/            # Terminal-style guestbook
+  about/                # About page with timeline
+components/
+  layout/               # Header, footer, background effects
+  ui/                   # Reusable UI components
+  blog/                 # Blog-specific components
+  guestbook/            # Guestbook components
+lib/
+  supabase/             # Supabase client, queries, actions
+  utils.ts              # Utility functions
+supabase/
+  schema.sql            # Database schema + RLS + RPC
+```
+
+## What You'll Need to Customize
+
+- Personal introduction text in `app/about/page.tsx`
+- Blog posts — insert via Supabase Table Editor
+- Project info — insert into the `projects` table
+- Social links in `components/layout/site-footer.tsx`
+- Brand name / metadata in `app/layout.tsx`
