@@ -1,5 +1,5 @@
 import { getCommentsBySlug } from "@/lib/supabase/queries";
-import { CommentItem } from "./comment-item";
+import { MessageItem } from "@/components/ui/message-item";
 
 interface CommentListProps {
   slug: string;
@@ -32,12 +32,13 @@ export async function CommentList({ slug }: CommentListProps) {
   return (
     <div>
       {comments.map((comment, i) => (
-        <CommentItem
+        <MessageItem
           key={comment.id}
           name={comment.name}
           message={comment.message}
           created_at={comment.created_at}
           index={i}
+          variant="comment"
         />
       ))}
     </div>

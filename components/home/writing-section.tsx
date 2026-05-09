@@ -119,8 +119,8 @@ export function WritingSection({ posts }: WritingSectionProps) {
                         {post.likes ?? 0}
                       </span>
                     </div>
-                    <span className="text-xs text-text-muted opacity-0 group-hover:opacity-100 transition-opacity">
-                      Read →
+                    <span className="flex items-center gap-1 text-xs text-text-muted opacity-0 group-hover:opacity-100 transition-opacity">
+                      Read <ArrowUpRight size={12} />
                     </span>
                   </div>
                 </Link>

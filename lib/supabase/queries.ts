@@ -98,6 +98,18 @@ export async function getPublishedPostsPaginated(page: number = 1, pageSize: num
   return { posts: data ?? [], total: count ?? 0 };
 }
 
+export async function getPostMetricsBatch(slugs: string[]) {
+  if (slugs.length === 0) return [];
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("post_metrics")
+    .select("slug, views, likes")
+    .in("slug", slugs);
+
+  if (error) throw error;
+  return data ?? [];
+}
+
 export async function getCommentsBySlug(slug: string) {
   const supabase = await createClient();
   const { data, error } = await supabase

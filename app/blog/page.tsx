@@ -1,7 +1,9 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { PageTransition } from "@/components/layout/page-transition";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { PostList } from "@/components/blog/post-list";
+import { PostCardSkeleton } from "@/components/ui/skeleton-card";
 
 export const metadata: Metadata = {
   title: "Blog",
@@ -23,7 +25,17 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
           title="Blog"
           subtitle="Technical writings on interfaces, systems, and engineering"
         />
-        <PostList page={page} />
+        <Suspense
+          fallback={
+            <div className="space-y-4">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <PostCardSkeleton key={i} />
+              ))}
+            </div>
+          }
+        >
+          <PostList page={page} />
+        </Suspense>
       </div>
     </PageTransition>
   );

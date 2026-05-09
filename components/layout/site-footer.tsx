@@ -1,10 +1,10 @@
-import { Code2, Globe, Rss } from "lucide-react";
+import { Code2, Rss, ExternalLink } from "lucide-react";
 import { MagneticLink } from "@/components/ui/magnetic-link";
 
 const socialLinks = [
-  { href: "https://github.com", icon: Code2, label: "GitHub" },
-  { href: "https://twitter.com", icon: Globe, label: "Twitter" },
-  { href: "/rss.xml", icon: Rss, label: "RSS" },
+  { href: "https://github.com/ZhijiageHB/Neon-Archive", icon: Code2, label: "GitHub" },
+  { href: "https://x.com", icon: ExternalLink, label: "Twitter" },
+  { href: "/feed.xml", icon: Rss, label: "RSS" },
 ];
 
 export function SiteFooter() {

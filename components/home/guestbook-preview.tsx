@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Reveal } from "@/components/ui/reveal";
-import { formatDate } from "@/lib/utils";
 
 interface Message {
   id: string;
@@ -37,17 +36,17 @@ export function GuestbookPreview({ messages }: GuestbookPreviewProps) {
               </Link>
             </div>
 
-            {/* Terminal-style preview */}
             <div className="rounded-xl bg-text-primary/[0.02] border border-border-subtle p-5 font-mono text-sm">
               {messages.length > 0 ? (
                 <div className="space-y-3">
-                  {messages.map((msg) => (
-                    <div key={msg.id}>
-                      <span className="text-brand-purple">{msg.name}</span>
-                      <span className="text-text-muted"> @</span>
-                      <span className="text-text-muted">archive:~$ </span>
-                      <span className="text-text-secondary">{msg.message}</span>
-                    </div>
+                  {messages.map((msg, i) => (
+                    <Reveal key={msg.id} delay={i * 0.08}>
+                      <div>
+                        <span className="text-brand-purple">{msg.name}</span>
+                        <span className="text-text-muted">: </span>
+                        <span className="text-text-secondary">{msg.message}</span>
+                      </div>
+                    </Reveal>
                   ))}
                 </div>
               ) : (
@@ -64,7 +63,7 @@ export function GuestbookPreview({ messages }: GuestbookPreviewProps) {
             <div className="mt-6">
               <Link
                 href="/guestbook"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-purple text-white text-sm font-medium hover:bg-brand-purple/90 transition-colors"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl gradient-border bg-surface text-text-primary text-sm font-medium hover:shadow-[0_0_20px_rgba(124,58,237,0.10)] transition-shadow"
               >
                 Leave a message
                 <ArrowUpRight size={14} />

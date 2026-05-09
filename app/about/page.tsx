@@ -48,6 +48,8 @@ const skills = [
   "Git",
 ];
 
+const learning = ["Rust", "WebGL / Three.js", "Go"];
+
 const principles = [
   {
     title: "Craft over speed",
@@ -94,21 +96,21 @@ export default function AboutPage() {
         {/* Timeline */}
         <ScrollReveal>
           <section className="mb-20">
-            <SectionHeading title="Timeline" subtitle="Key milestones" />
+            <SectionHeading title="Timeline" subtitle="Key milestones along the way" />
             <div className="relative pl-6 border-l border-border-subtle">
               {timeline.map((item, i) => (
-                <div key={i} className="relative mb-10 last:mb-0">
+                <div key={i} className="group relative mb-10 last:mb-0 transition-all duration-300">
                   {/* Node */}
-                  <div className="absolute -left-[25px] w-3 h-3 rounded-full bg-brand-purple border-2 border-background" />
+                  <div className="absolute -left-[25px] w-3 h-3 rounded-full bg-brand-purple border-2 border-background group-hover:shadow-[0_0_12px_rgba(124,58,237,0.4)] transition-shadow duration-300" />
                   {/* Glow line segment */}
                   <div className="absolute -left-[13px] top-3 w-[2px] h-[calc(100%+16px)] bg-gradient-to-b from-brand-purple/30 to-transparent" />
-                  <span className="text-xs font-mono text-brand-cyan">
+                  <span className="text-xs font-mono gradient-text font-medium">
                     {item.year}
                   </span>
-                  <h3 className="text-lg font-semibold text-text-primary mt-1">
+                  <h3 className="text-lg font-semibold text-text-primary mt-1 group-hover:text-brand-purple transition-colors">
                     {item.title}
                   </h3>
-                  <p className="text-sm text-text-secondary mt-1">
+                  <p className="text-sm text-text-muted mt-1 group-hover:text-text-secondary transition-colors">
                     {item.description}
                   </p>
                 </div>
@@ -122,17 +124,32 @@ export default function AboutPage() {
           <section className="mb-20">
             <SectionHeading
               title="Tech Stack"
-              subtitle="Tools I work with"
+              subtitle="Tools I work with daily"
             />
             <div className="flex flex-wrap gap-2">
               {skills.map((skill) => (
                 <span
                   key={skill}
-                  className="px-3.5 py-1.5 text-sm font-mono rounded-full glass text-text-secondary hover:text-text-primary hover:border-brand-purple/30 transition-colors cursor-default"
+                  className="px-3.5 py-1.5 text-sm font-mono rounded-full glass text-text-secondary hover:text-text-primary hover:gradient-border transition-all duration-200 cursor-default"
                 >
                   {skill}
                 </span>
               ))}
+            </div>
+            <div className="mt-6">
+              <p className="text-xs font-mono text-text-muted uppercase tracking-widest mb-2">
+                Currently learning
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {learning.map((skill) => (
+                  <span
+                    key={skill}
+                    className="px-3.5 py-1.5 text-sm font-mono rounded-full bg-brand-cyan/8 text-brand-cyan/80 hover:text-brand-cyan transition-colors cursor-default"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
             </div>
           </section>
         </ScrollReveal>
@@ -145,15 +162,17 @@ export default function AboutPage() {
               subtitle="How I approach building"
             />
             <div className="grid gap-4 sm:grid-cols-3">
-              {principles.map((p) => (
-                <InteractiveCard key={p.title}>
-                  <h3 className="text-base font-semibold text-text-primary mb-2">
-                    {p.title}
-                  </h3>
-                  <p className="text-sm text-text-secondary leading-relaxed">
-                    {p.description}
-                  </p>
-                </InteractiveCard>
+              {principles.map((p, i) => (
+                <div key={p.title} className={i === 0 ? "sm:col-span-2" : ""}>
+                  <InteractiveCard>
+                    <h3 className="text-base font-semibold text-text-primary mb-2">
+                      {p.title}
+                    </h3>
+                    <p className="text-sm text-text-secondary leading-relaxed">
+                      {p.description}
+                    </p>
+                  </InteractiveCard>
+                </div>
               ))}
             </div>
           </section>

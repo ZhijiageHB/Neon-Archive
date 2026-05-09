@@ -1,5 +1,4 @@
 import { ArrowUpRight } from "lucide-react";
-import { BrowserFrame } from "@/components/ui/browser-frame";
 import { TiltCard } from "@/components/ui/tilt-card";
 import { Reveal } from "@/components/ui/reveal";
 
@@ -16,13 +15,9 @@ interface FeaturedExperimentsProps {
   projects: Project[];
 }
 
-const gradients = [
-  "from-brand-purple/20 via-brand-cyan/10 to-brand-blue/5",
-  "from-brand-orange/15 via-brand-pink/10 to-brand-purple/5",
-  "from-brand-cyan/15 via-brand-blue/10 to-brand-violet/5",
-];
-
 export function FeaturedExperiments({ projects }: FeaturedExperimentsProps) {
+  const [first, ...rest] = projects.slice(0, 3);
+
   return (
     <section className="py-16">
       <div className="mx-auto max-w-6xl px-6">
@@ -37,9 +32,50 @@ export function FeaturedExperiments({ projects }: FeaturedExperimentsProps) {
           </div>
         </Reveal>
 
-        <div className="space-y-6">
-          {projects.slice(0, 3).map((project, i) => (
-            <Reveal key={project.id} delay={i * 0.1}>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {/* Large card — first project */}
+          {first && (
+            <Reveal className="md:col-span-2">
+              <a
+                href={first.url || first.github_url || "#"}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block"
+              >
+                <TiltCard>
+                  <div className="p-6 sm:p-8">
+                    <div className="flex items-start justify-between mb-4">
+                      <h3 className="text-xl sm:text-2xl font-semibold text-text-primary">
+                        {first.title}
+                      </h3>
+                      <ArrowUpRight size={18} className="text-text-muted shrink-0 mt-1" />
+                    </div>
+                    {first.description && (
+                      <p className="text-sm text-text-secondary leading-relaxed mb-5 max-w-xl">
+                        {first.description}
+                      </p>
+                    )}
+                    {first.tech_stack?.length > 0 && (
+                      <div className="flex flex-wrap gap-2">
+                        {first.tech_stack.map((tech: string) => (
+                          <span
+                            key={tech}
+                            className="px-2.5 py-1 text-[11px] font-mono rounded-full bg-brand-purple/6 text-text-secondary"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </TiltCard>
+              </a>
+            </Reveal>
+          )}
+
+          {/* Smaller cards */}
+          {rest.map((project, i) => (
+            <Reveal key={project.id} delay={(i + 1) * 0.1}>
               <a
                 href={project.url || project.github_url || "#"}
                 target="_blank"
@@ -47,44 +83,30 @@ export function FeaturedExperiments({ projects }: FeaturedExperimentsProps) {
                 className="block"
               >
                 <TiltCard>
-                  <div className="flex flex-col md:flex-row gap-6 p-6 sm:p-8">
-                    {/* Browser mockup — left */}
-                    <div className="md:w-3/5 shrink-0">
-                      <BrowserFrame url={project.url || undefined}>
-                        <div
-                          className={`h-48 sm:h-56 bg-gradient-to-br ${gradients[i % gradients.length]}`}
-                        />
-                      </BrowserFrame>
+                  <div className="p-5 sm:p-6">
+                    <div className="flex items-start justify-between mb-3">
+                      <h3 className="text-lg font-semibold text-text-primary">
+                        {project.title}
+                      </h3>
+                      <ArrowUpRight size={16} className="text-text-muted shrink-0 mt-0.5" />
                     </div>
-                    {/* Info — right */}
-                    <div className="flex flex-col justify-between py-2 md:py-4">
-                      <div>
-                        <h3 className="text-xl sm:text-2xl font-semibold text-text-primary mb-2">
-                          {project.title}
-                        </h3>
-                        {project.description && (
-                          <p className="text-sm text-text-secondary leading-relaxed max-w-md">
-                            {project.description}
-                          </p>
-                        )}
-                        {project.tech_stack?.length > 0 && (
-                          <div className="flex flex-wrap gap-1.5 mt-4">
-                            {project.tech_stack.map((tech: string) => (
-                              <span
-                                key={tech}
-                                className="px-2.5 py-0.5 text-[11px] font-mono rounded-full bg-brand-purple/6 text-text-muted"
-                              >
-                                {tech}
-                              </span>
-                            ))}
-                          </div>
-                        )}
+                    {project.description && (
+                      <p className="text-sm text-text-secondary leading-relaxed mb-4">
+                        {project.description}
+                      </p>
+                    )}
+                    {project.tech_stack?.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5">
+                        {project.tech_stack.map((tech: string) => (
+                          <span
+                            key={tech}
+                            className="px-2 py-0.5 text-[10px] font-mono rounded-full bg-brand-purple/6 text-text-muted"
+                          >
+                            {tech}
+                          </span>
+                        ))}
                       </div>
-                      <div className="mt-4 flex items-center gap-1.5 text-sm text-text-muted">
-                        <span>View project</span>
-                        <ArrowUpRight size={14} />
-                      </div>
-                    </div>
+                    )}
                   </div>
                 </TiltCard>
               </a>

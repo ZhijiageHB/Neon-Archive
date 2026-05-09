@@ -2,36 +2,41 @@
 
 import { motion } from "framer-motion";
 import { formatDate } from "@/lib/utils";
+import { springs } from "@/lib/animations";
 
-interface CommentItemProps {
+interface MessageItemProps {
   name: string;
   message: string;
   created_at: string;
   index: number;
+  variant?: "guestbook" | "comment";
 }
 
-export function CommentItem({
+export function MessageItem({
   name,
   message,
   created_at,
   index,
-}: CommentItemProps) {
+  variant = "comment",
+}: MessageItemProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{
-        type: "spring",
-        stiffness: 100,
-        damping: 20,
-        delay: index * 0.06,
-      }}
+      transition={{ ...springs.smooth, delay: index * 0.04 }}
       className="py-4 border-b border-border-subtle last:border-0"
     >
       <div className="flex items-baseline gap-2">
-        <span className="text-brand-purple font-mono text-sm font-medium">
+        <span
+          className={`font-mono text-sm font-medium ${
+            variant === "guestbook" ? "text-brand-cyan" : "text-brand-purple"
+          }`}
+        >
           {name}
         </span>
+        {variant === "guestbook" && (
+          <span className="text-text-muted font-mono text-xs">@archive:~$</span>
+        )}
         <span className="text-text-muted font-mono text-xs">
           {formatDate(created_at)}
         </span>
