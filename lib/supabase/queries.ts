@@ -81,3 +81,31 @@ export async function incrementLikes(slug: string) {
   const supabase = await createClient();
   await supabase.rpc("increment_post_likes", { p_slug: slug });
 }
+
+export async function getPublishedPostsPaginated(page: number = 1, pageSize: number = 10) {
+  const supabase = await createClient();
+  const from = (page - 1) * pageSize;
+  const to = from + pageSize - 1;
+
+  const { data, error, count } = await supabase
+    .from("posts")
+    .select("id, slug, title, excerpt, cover_image, tags, published_at", { count: "exact" })
+    .eq("published", true)
+    .order("published_at", { ascending: false })
+    .range(from, to);
+
+  if (error) throw error;
+  return { posts: data ?? [], total: count ?? 0 };
+}
+
+export async function getCommentsBySlug(slug: string) {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("comments")
+    .select("*")
+    .eq("post_slug", slug)
+    .order("created_at", { ascending: false });
+
+  if (error) throw error;
+  return data ?? [];
+}

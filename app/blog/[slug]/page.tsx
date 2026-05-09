@@ -8,6 +8,8 @@ import { PageTransition } from "@/components/layout/page-transition";
 import { MarkdownRenderer } from "@/components/blog/markdown-renderer";
 import { PostMetrics } from "@/components/blog/post-metrics";
 import { ClapButton } from "@/components/blog/clap-button";
+import { CommentForm } from "@/components/blog/comment-form";
+import { CommentList } from "@/components/blog/comment-list";
 import { ReadingProgress } from "@/components/ui/reading-progress";
 import { formatDate } from "@/lib/utils";
 
@@ -24,6 +26,19 @@ export async function generateMetadata({
     return {
       title: post.title,
       description: post.excerpt ?? undefined,
+      openGraph: {
+        title: post.title,
+        description: post.excerpt ?? undefined,
+        type: "article",
+        publishedTime: post.published_at,
+        tags: post.tags,
+        url: `https://neon-archive.vercel.app/blog/${slug}`,
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: post.title,
+        description: post.excerpt ?? undefined,
+      },
     };
   } catch {
     return { title: "Post Not Found" };
@@ -50,9 +65,23 @@ export default async function BlogPostPage({ params }: PageProps) {
     // ignore
   }
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.excerpt,
+    datePublished: post.published_at,
+    author: { "@type": "Person", name: "Neon Archive" },
+    url: `https://neon-archive.vercel.app/blog/${slug}`,
+  };
+
   return (
     <>
       <ReadingProgress />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <PageTransition>
         <article className="mx-auto max-w-3xl px-6 pt-32 pb-20">
           {/* Back link */}
@@ -110,7 +139,7 @@ export default async function BlogPostPage({ params }: PageProps) {
           <div className="h-px bg-gradient-to-r from-transparent via-brand-cyan/20 to-brand-purple/30 mb-8" />
 
           {/* Clap */}
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mb-16">
             <ClapButton slug={post.slug} initialLikes={metrics.likes} />
             <Link
               href="/blog"
@@ -118,6 +147,17 @@ export default async function BlogPostPage({ params }: PageProps) {
             >
               All posts &rarr;
             </Link>
+          </div>
+
+          {/* Comments */}
+          <div className="border-t border-border-subtle pt-12">
+            <h3 className="text-xl font-bold text-text-primary mb-6">
+              Comments
+            </h3>
+            <CommentForm slug={slug} />
+            <div className="mt-8">
+              <CommentList slug={slug} />
+            </div>
           </div>
         </article>
       </PageTransition>

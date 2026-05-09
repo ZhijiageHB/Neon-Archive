@@ -1,11 +1,19 @@
-import { getPublishedPosts, getPostMetrics } from "@/lib/supabase/queries";
+import { getPublishedPostsPaginated, getPostMetrics } from "@/lib/supabase/queries";
 import { PostCard } from "./post-card";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
+import { Pagination } from "@/components/ui/pagination";
 
-export async function PostList() {
-  let posts;
+interface PostListProps {
+  page?: number;
+  pageSize?: number;
+}
+
+export async function PostList({ page = 1, pageSize = 10 }: PostListProps) {
+  let posts, total;
   try {
-    posts = await getPublishedPosts();
+    const result = await getPublishedPostsPaginated(page, pageSize);
+    posts = result.posts;
+    total = result.total;
   } catch {
     return (
       <div className="py-16 text-center">
@@ -37,6 +45,8 @@ export async function PostList() {
     })
   );
 
+  const totalPages = Math.ceil(total / pageSize);
+
   return (
     <div>
       {postsWithMetrics.map((post, i) => (
@@ -52,6 +62,7 @@ export async function PostList() {
           />
         </ScrollReveal>
       ))}
+      <Pagination currentPage={page} totalPages={totalPages} />
     </div>
   );
 }

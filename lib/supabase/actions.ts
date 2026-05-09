@@ -45,3 +45,34 @@ export async function createGuestbookMessage(
   revalidatePath("/guestbook");
   return { success: true, error: "" };
 }
+
+export async function createComment(
+  _prevState: { success: boolean; error: string },
+  formData: FormData
+) {
+  const slug = formData.get("slug") as string;
+  const name = formData.get("name") as string;
+  const message = formData.get("message") as string;
+
+  if (!name?.trim() || !message?.trim()) {
+    return { success: false, error: "Name and message are required." };
+  }
+  if (name.length > 50) {
+    return { success: false, error: "Name must be 50 characters or less." };
+  }
+  if (message.length > 1000) {
+    return { success: false, error: "Message must be 1000 characters or less." };
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("comments")
+    .insert({ post_slug: slug, name: name.trim(), message: message.trim() });
+
+  if (error) {
+    return { success: false, error: "Failed to post comment. Try again." };
+  }
+
+  revalidatePath(`/blog/${slug}`);
+  return { success: true, error: "" };
+}

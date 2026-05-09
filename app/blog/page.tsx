@@ -8,7 +8,14 @@ export const metadata: Metadata = {
   description: "Technical writings on interfaces, systems, and engineering.",
 };
 
-export default function BlogPage() {
+interface BlogPageProps {
+  searchParams: Promise<{ page?: string }>;
+}
+
+export default async function BlogPage({ searchParams }: BlogPageProps) {
+  const params = await searchParams;
+  const page = Math.max(1, parseInt(params.page ?? "1", 10));
+
   return (
     <PageTransition>
       <div className="mx-auto max-w-5xl px-6 pt-32 pb-20">
@@ -16,7 +23,7 @@ export default function BlogPage() {
           title="Blog"
           subtitle="Technical writings on interfaces, systems, and engineering"
         />
-        <PostList />
+        <PostList page={page} />
       </div>
     </PageTransition>
   );

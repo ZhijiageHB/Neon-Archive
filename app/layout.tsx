@@ -26,7 +26,12 @@ export const metadata: Metadata = {
   },
   description:
     "A personal technical archive exploring interfaces, systems, and ideas.",
-  metadataBase: new URL("https://neonarchive.dev"),
+  metadataBase: new URL("https://neon-archive.vercel.app"),
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    siteName: "Neon Archive",
+  },
 };
 
 export default function RootLayout({
