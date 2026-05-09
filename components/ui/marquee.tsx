@@ -19,7 +19,8 @@ export function Marquee({
 }: MarqueeProps) {
   const [paused, setPaused] = useState(false);
 
-  const duplicated = [...items, ...items];
+  // Duplicate 4x to ensure content fills any viewport width
+  const duplicated = [...items, ...items, ...items, ...items];
 
   return (
     <div
