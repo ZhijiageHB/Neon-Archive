@@ -23,12 +23,17 @@ export function Marquee({
 
   return (
     <div
-      className={`overflow-hidden ${className}`}
+      className={`relative overflow-hidden ${className}`}
       onMouseEnter={pauseOnHover ? () => setPaused(true) : undefined}
       onMouseLeave={pauseOnHover ? () => setPaused(false) : undefined}
     >
+      {/* Left fade */}
+      <div className="absolute left-0 top-0 bottom-0 w-24 sm:w-32 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+      {/* Right fade */}
+      <div className="absolute right-0 top-0 bottom-0 w-24 sm:w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+
       <div
-        className="flex w-max gap-4"
+        className="flex w-max gap-4 px-4"
         style={{
           animation: `${direction === "left" ? "marquee-left" : "marquee-right"} ${speed}s linear infinite`,
           animationPlayState: paused ? "paused" : "running",
