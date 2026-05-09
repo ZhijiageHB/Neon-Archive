@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -17,11 +17,28 @@ const links = [
 export function SiteHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const { scrollY } = useScroll();
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    setScrolled(latest > 50);
+  });
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
-      <div className="mx-auto max-w-5xl px-6 py-4">
-        <nav className="flex items-center justify-between rounded-xl glass px-5 py-3">
+      <motion.div
+        className="mx-auto max-w-6xl px-6"
+        animate={{ paddingTop: scrolled ? 12 : 16, paddingBottom: scrolled ? 12 : 16 }}
+        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+      >
+        <motion.nav
+          className={cn(
+            "flex items-center justify-between rounded-xl glass px-5 py-3 transition-shadow duration-300",
+            scrolled && "shadow-md"
+          )}
+          animate={{ paddingTop: scrolled ? 8 : 12, paddingBottom: scrolled ? 8 : 12 }}
+          transition={{ type: "spring", stiffness: 300, damping: 30 }}
+        >
           <Link
             href="/"
             className="text-lg font-bold tracking-tight text-text-primary hover:opacity-80 transition-opacity"
@@ -50,7 +67,7 @@ export function SiteHeader() {
                     {isActive && (
                       <motion.span
                         layoutId="nav-highlight"
-                        className="absolute inset-0 rounded-lg bg-white/[0.06]"
+                        className="absolute inset-0 rounded-lg bg-black/[0.06]"
                         transition={{
                           type: "spring",
                           stiffness: 350,
@@ -73,7 +90,7 @@ export function SiteHeader() {
           >
             {open ? <X size={20} /> : <Menu size={20} />}
           </button>
-        </nav>
+        </motion.nav>
 
         {/* Mobile menu */}
         <AnimatePresence>
@@ -99,8 +116,8 @@ export function SiteHeader() {
                         className={cn(
                           "block px-4 py-2.5 text-sm rounded-lg transition-colors",
                           isActive
-                            ? "text-text-primary bg-white/[0.06]"
-                            : "text-text-secondary hover:text-text-primary hover:bg-white/[0.03]"
+                            ? "text-text-primary bg-black/[0.06]"
+                            : "text-text-secondary hover:text-text-primary hover:bg-black/[0.03]"
                         )}
                       >
                         {link.label}
@@ -112,7 +129,7 @@ export function SiteHeader() {
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
+      </motion.div>
     </header>
   );
 }

@@ -21,7 +21,7 @@ export function CodeBlock({ children, className, filename }: CodeBlockProps) {
   const language = className?.replace("language-", "") ?? "";
 
   return (
-    <div className="my-6 rounded-xl overflow-hidden border border-border-subtle bg-[#0c0c1a]">
+    <div className="my-6 rounded-xl overflow-hidden border border-border-subtle bg-[#1a1a2e]">
       {/* macOS-style header */}
       <div className="flex items-center justify-between px-4 py-2.5 border-b border-border-subtle bg-surface-soft">
         <div className="flex items-center gap-3">

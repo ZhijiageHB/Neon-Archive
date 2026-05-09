@@ -2,23 +2,26 @@
 @plugin "@tailwindcss/typography";
 
 /* ============================================
-   Tailwind v4 Theme — Neon Archive
+   Tailwind v4 Theme — Neon Archive (Light Futurism)
    ============================================ */
 
 @theme inline {
-  /* Colors */
-  --color-background: #050510;
-  --color-surface: #10101f;
-  --color-surface-soft: #151528;
-  --color-border-subtle: rgba(255, 255, 255, 0.06);
-  --color-border-glow: rgba(124, 58, 237, 0.3);
-  --color-text-primary: #f4f4f5;
-  --color-text-secondary: #a1a1aa;
-  --color-text-muted: #71717a;
-  --color-brand-purple: #7c3aed;
-  --color-brand-cyan: #06b6d4;
+  /* Colors — Light */
+  --color-background: #F7F4EF;
+  --color-surface: #FFFFFF;
+  --color-surface-soft: #F8FAFC;
+  --color-surface-cool: #EEF6FF;
+  --color-border-subtle: rgba(0, 0, 0, 0.06);
+  --color-border-glow: rgba(124, 58, 237, 0.2);
+  --color-text-primary: #101014;
+  --color-text-secondary: #5E6472;
+  --color-text-muted: #9CA3AF;
+  --color-brand-purple: #7C3AED;
+  --color-brand-cyan: #06B6D4;
   --color-brand-blue: #22d3ee;
   --color-brand-violet: #a855f7;
+  --color-brand-orange: #F97316;
+  --color-brand-pink: #EC4899;
 
   /* Fonts */
   --font-sans: "Space Grotesk", var(--font-geist-sans), system-ui, sans-serif;
@@ -31,6 +34,9 @@
   --animate-glow-pulse: glow-pulse 3s ease-in-out infinite;
   --animate-float: float 6s ease-in-out infinite;
   --animate-grid-move: grid-move 20s linear infinite;
+  --animate-marquee-left: marquee-left 30s linear infinite;
+  --animate-marquee-right: marquee-right 30s linear infinite;
+  --animate-blink: blink 1s step-end infinite;
 }
 
 @keyframes fade-in {
@@ -63,6 +69,20 @@
   100% { transform: translate(40px, 40px); }
 }
 
+@keyframes marquee-left {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes marquee-right {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
 /* ============================================
    Base Styles
    ============================================ */
@@ -78,8 +98,8 @@ body {
 }
 
 ::selection {
-  background: rgba(124, 58, 237, 0.35);
-  color: #f4f4f5;
+  background: rgba(124, 58, 237, 0.2);
+  color: #101014;
 }
 
 /* Scrollbar */
@@ -90,11 +110,11 @@ body {
   background: var(--color-background);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.1);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.2);
 }
 
 /* ============================================
@@ -106,7 +126,7 @@ body {
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  opacity: 0.03;
+  opacity: 0.015;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
   background-repeat: repeat;
   background-size: 128px 128px;
@@ -122,28 +142,28 @@ body {
   z-index: 0;
   pointer-events: none;
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
   background-size: 60px 60px;
   mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, black 20%, transparent 70%);
   -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, black 20%, transparent 70%);
 }
 
 /* ============================================
-   Prose Overrides (Dark Theme)
+   Prose Overrides (Light Theme)
    ============================================ */
 
-.prose-invert {
-  --tw-prose-body: #a1a1aa;
-  --tw-prose-headings: #f4f4f5;
-  --tw-prose-links: #7c3aed;
-  --tw-prose-bold: #f4f4f5;
-  --tw-prose-code: #f4f4f5;
-  --tw-prose-quotes: #a1a1aa;
-  --tw-prose-quote-borders: #7c3aed;
+.prose {
+  --tw-prose-body: #5E6472;
+  --tw-prose-headings: #101014;
+  --tw-prose-links: #7C3AED;
+  --tw-prose-bold: #101014;
+  --tw-prose-code: #101014;
+  --tw-prose-quotes: #5E6472;
+  --tw-prose-quote-borders: #7C3AED;
 }
 
-.prose-invert h1 {
+.prose h1 {
   font-size: 2.25rem;
   font-weight: 700;
   letter-spacing: -0.025em;
@@ -151,7 +171,7 @@ body {
   margin-bottom: 1rem;
 }
 
-.prose-invert h2 {
+.prose h2 {
   font-size: 1.5rem;
   font-weight: 600;
   letter-spacing: -0.02em;
@@ -159,36 +179,36 @@ body {
   margin-bottom: 0.75rem;
 }
 
-.prose-invert h3 {
+.prose h3 {
   font-size: 1.25rem;
   font-weight: 600;
   margin-top: 2rem;
   margin-bottom: 0.5rem;
 }
 
-.prose-invert p {
+.prose p {
   line-height: 1.8;
   margin-bottom: 1.25em;
 }
 
-.prose-invert blockquote {
-  border-left: 2px solid #7c3aed;
+.prose blockquote {
+  border-left: 2px solid #7C3AED;
   padding-left: 1.25rem;
   font-style: italic;
-  box-shadow: -4px 0 12px rgba(124, 58, 237, 0.15);
+  box-shadow: -4px 0 12px rgba(124, 58, 237, 0.08);
 }
 
-.prose-invert code:not(pre code) {
-  background: rgba(124, 58, 237, 0.12);
-  border: 1px solid rgba(124, 58, 237, 0.2);
+.prose code:not(pre code) {
+  background: rgba(124, 58, 237, 0.08);
+  border: 1px solid rgba(124, 58, 237, 0.15);
   border-radius: 4px;
   padding: 0.15em 0.35em;
   font-size: 0.875em;
   font-family: var(--font-mono);
 }
 
-.prose-invert a {
-  background: linear-gradient(135deg, #7c3aed, #06b6d4);
+.prose a {
+  background: linear-gradient(135deg, #7C3AED, #06B6D4);
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
@@ -197,13 +217,13 @@ body {
   transition: opacity 0.2s;
 }
 
-.prose-invert a:hover {
+.prose a:hover {
   opacity: 0.8;
 }
 
-.prose-invert img {
+.prose img {
   border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 /* ============================================
@@ -211,7 +231,7 @@ body {
    ============================================ */
 
 .gradient-text {
-  background: linear-gradient(135deg, #7c3aed, #06b6d4, #a855f7);
+  background: linear-gradient(135deg, #7C3AED, #06B6D4, #a855f7);
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
@@ -228,7 +248,7 @@ body {
   inset: 0;
   border-radius: inherit;
   padding: 1px;
-  background: linear-gradient(135deg, rgba(124, 58, 237, 0.4), rgba(6, 182, 212, 0.4));
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.25), rgba(6, 182, 212, 0.25));
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask-composite: exclude;
@@ -237,10 +257,10 @@ body {
 }
 
 .glass {
-  background: rgba(16, 16, 31, 0.6);
+  background: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 /* Reduce motion */

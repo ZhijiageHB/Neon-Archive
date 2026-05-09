@@ -3,8 +3,9 @@ import { Space_Grotesk, Fira_Code } from "next/font/google";
 import "./globals.css";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
-import { BackgroundEffects } from "@/components/layout/background-effects";
-import { MouseSpotlight } from "@/components/layout/mouse-spotlight";
+import { LiquidBackground } from "@/components/effects/liquid-background";
+import { CursorSpotlight } from "@/components/effects/cursor-spotlight";
+import { NoiseOverlay } from "@/components/effects/noise-overlay";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -39,9 +40,9 @@ export default function RootLayout({
       className={`${spaceGrotesk.variable} ${firaCode.variable} antialiased`}
     >
       <body className="min-h-screen bg-background text-text-primary">
-        <BackgroundEffects />
-        <MouseSpotlight />
-        <div className="noise-overlay" />
+        <LiquidBackground />
+        <CursorSpotlight />
+        <NoiseOverlay />
         <SiteHeader />
         <main className="relative z-10 flex-1">{children}</main>
         <SiteFooter />

@@ -9,7 +9,7 @@ interface MarkdownRendererProps {
 
 export function MarkdownRenderer({ content }: MarkdownRendererProps) {
   return (
-    <div className="prose prose-invert max-w-none">
+    <div className="prose max-w-none">
       <Markdown
         components={{
           pre({ children }) {

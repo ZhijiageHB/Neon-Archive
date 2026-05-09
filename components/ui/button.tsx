@@ -32,9 +32,9 @@ export function Button({
       className={cn(
         "relative inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-medium rounded-xl transition-shadow cursor-pointer",
         variant === "primary" &&
-          "gradient-border bg-surface text-text-primary hover:shadow-[0_0_20px_rgba(124,58,237,0.15)]",
+          "gradient-border bg-surface text-text-primary hover:shadow-[0_0_20px_rgba(124,58,237,0.10)]",
         variant === "ghost" &&
-          "text-text-secondary hover:text-text-primary hover:bg-white/[0.04]",
+          "text-text-secondary hover:text-text-primary hover:bg-black/[0.04]",
         disabled && "opacity-50 cursor-not-allowed",
         className
       )}
