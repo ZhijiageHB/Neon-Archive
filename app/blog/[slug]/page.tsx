@@ -41,9 +41,14 @@ export default async function BlogPostPage({ params }: PageProps) {
   }
 
   // Increment views (fire-and-forget)
-  incrementViews(slug);
+  incrementViews(slug).catch(() => {});
 
-  const metrics = await getPostMetrics(slug);
+  let metrics = { views: 0, likes: 0 };
+  try {
+    metrics = await getPostMetrics(slug);
+  } catch {
+    // ignore
+  }
 
   return (
     <>

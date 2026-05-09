@@ -3,9 +3,20 @@ import { PostCard } from "./post-card";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
 export async function PostList() {
-  const posts = await getPublishedPosts();
+  let posts;
+  try {
+    posts = await getPublishedPosts();
+  } catch {
+    return (
+      <div className="py-16 text-center">
+        <p className="text-text-muted font-mono text-sm">
+          {"// no posts yet"}
+        </p>
+      </div>
+    );
+  }
 
-  if (posts.length === 0) {
+  if (!posts || posts.length === 0) {
     return (
       <div className="py-16 text-center">
         <p className="text-text-muted font-mono text-sm">
@@ -17,8 +28,12 @@ export async function PostList() {
 
   const postsWithMetrics = await Promise.all(
     posts.map(async (post) => {
-      const metrics = await getPostMetrics(post.slug);
-      return { ...post, ...metrics };
+      try {
+        const metrics = await getPostMetrics(post.slug);
+        return { ...post, ...metrics };
+      } catch {
+        return { ...post, views: 0, likes: 0 };
+      }
     })
   );
 

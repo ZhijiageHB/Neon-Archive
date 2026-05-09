@@ -2,9 +2,20 @@ import { getGuestbookMessages } from "@/lib/supabase/queries";
 import { GuestbookMessage } from "./guestbook-message";
 
 export async function GuestbookList() {
-  const messages = await getGuestbookMessages();
+  let messages;
+  try {
+    messages = await getGuestbookMessages();
+  } catch {
+    return (
+      <div className="py-8 text-center">
+        <p className="text-text-muted font-mono text-sm">
+          {"// no messages yet. be the first."}
+        </p>
+      </div>
+    );
+  }
 
-  if (messages.length === 0) {
+  if (!messages || messages.length === 0) {
     return (
       <div className="py-8 text-center">
         <p className="text-text-muted font-mono text-sm">
