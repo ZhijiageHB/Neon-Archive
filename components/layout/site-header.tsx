@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const links = [
@@ -81,6 +81,15 @@ export function SiteHeader() {
               );
             })}
           </ul>
+
+          {/* Desktop search */}
+          <Link
+            href="/blog"
+            className="hidden md:flex items-center justify-center w-9 h-9 rounded-lg text-text-secondary hover:text-text-primary hover:bg-black/[0.06] transition-colors"
+            aria-label="Search posts"
+          >
+            <Search size={17} />
+          </Link>
 
           {/* Mobile toggle */}
           <button

@@ -1,23 +1,26 @@
-import { getPublishedPostsPaginated, getPostMetricsBatch } from "@/lib/supabase/queries";
+import { getPublishedPostsPaginated, searchPublishedPosts, getPostMetricsBatch } from "@/lib/supabase/queries";
 import { PostCard } from "./post-card";
 import { Pagination } from "@/components/ui/pagination";
 
 interface PostListProps {
   page?: number;
   pageSize?: number;
+  search?: string;
 }
 
-export async function PostList({ page = 1, pageSize = 10 }: PostListProps) {
+export async function PostList({ page = 1, pageSize = 5, search }: PostListProps) {
   let posts, total;
   try {
-    const result = await getPublishedPostsPaginated(page, pageSize);
+    const result = search
+      ? await searchPublishedPosts(search, page, pageSize)
+      : await getPublishedPostsPaginated(page, pageSize);
     posts = result.posts;
     total = result.total;
   } catch {
     return (
       <div className="py-16 text-center">
         <p className="text-text-muted font-mono text-sm">
-          {"// no posts yet"}
+          {"// something went wrong. try again."}
         </p>
       </div>
     );
@@ -27,7 +30,7 @@ export async function PostList({ page = 1, pageSize = 10 }: PostListProps) {
     return (
       <div className="py-16 text-center">
         <p className="text-text-muted font-mono text-sm">
-          {"// no posts yet"}
+          {search ? `// no results for "${search}"` : "// no posts yet"}
         </p>
       </div>
     );

@@ -98,6 +98,23 @@ export async function getPublishedPostsPaginated(page: number = 1, pageSize: num
   return { posts: data ?? [], total: count ?? 0 };
 }
 
+export async function searchPublishedPosts(query: string, page: number = 1, pageSize: number = 5) {
+  const supabase = await createClient();
+  const from = (page - 1) * pageSize;
+  const to = from + pageSize - 1;
+
+  const { data, error, count } = await supabase
+    .from("posts")
+    .select("id, slug, title, excerpt, cover_image, tags, published_at", { count: "exact" })
+    .eq("published", true)
+    .or(`title.ilike.%${query}%,excerpt.ilike.%${query}%`)
+    .order("published_at", { ascending: false })
+    .range(from, to);
+
+  if (error) throw error;
+  return { posts: data ?? [], total: count ?? 0 };
+}
+
 export async function getPostMetricsBatch(slugs: string[]) {
   if (slugs.length === 0) return [];
   const supabase = await createClient();
