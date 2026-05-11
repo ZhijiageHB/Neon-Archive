@@ -7,7 +7,7 @@ import {
   useScroll,
   useTransform,
 } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ChevronDown } from "lucide-react";
 import { FloatingDashboard } from "@/components/ui/floating-dashboard";
 import { MagneticButton } from "@/components/ui/magnetic-button";
 import { Lamp } from "@/components/ui/lamp";
@@ -59,7 +59,7 @@ export function HeroSection({ recentPosts = [] }: HeroSectionProps) {
   return (
     <motion.section
       ref={heroRef}
-      className="relative min-h-[90vh] overflow-hidden"
+      className="relative min-h-screen overflow-hidden"
       style={{ scale: heroScale, opacity: heroOpacity }}
     >
       {/* Background layers */}
@@ -84,123 +84,126 @@ export function HeroSection({ recentPosts = [] }: HeroSectionProps) {
         01
       </span>
 
-      <div className="relative z-10 mx-auto max-w-6xl px-6 pt-32 pb-20 w-full">
-        <motion.div
-          variants={container}
-          initial="hidden"
-          animate="show"
-        >
-          {/* Badge — top left */}
-          <motion.div variants={item} className="mb-8">
-            <motion.span
-              className="inline-block px-3.5 py-1 rounded-full bg-brand-purple/8 text-brand-purple text-xs font-mono"
-              whileHover={{ scale: 1.05 }}
-            >
-              personal archive
-            </motion.span>
-          </motion.div>
-
-          {/* Massive title — left aligned, 70% width */}
-          <motion.h1
-            variants={item}
-            className="text-5xl sm:text-6xl lg:text-[5.5rem] font-bold tracking-tight leading-[0.95] mb-8 max-w-[75%]"
-          >
-            <motion.span
-              className="inline-block"
-              initial={{ opacity: 0, x: -30, filter: "blur(10px)" }}
-              animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-              transition={{ ...springs.gentle, delay: 0.3 }}
-            >
-              I design and build
-            </motion.span>
-            <br />
-            <span className="relative inline-block h-[1.15em] overflow-hidden align-bottom">
-              <AnimatePresence mode="wait">
-                <motion.span
-                  key={currentWord}
-                  initial={{ y: 50, opacity: 0, scale: 0.9, filter: "blur(6px)" }}
-                  animate={{ y: 0, opacity: 1, scale: 1, filter: "blur(0px)" }}
-                  exit={{ y: -50, opacity: 0, scale: 1.1, filter: "blur(6px)" }}
-                  transition={{ type: "spring", stiffness: 250, damping: 22 }}
-                  className="gradient-text absolute"
-                >
-                  {cyclingWords[currentWord]}
-                </motion.span>
-              </AnimatePresence>
-            </span>
-            <br />
-            <motion.span
-              className="inline-block"
-              initial={{ opacity: 0, x: -30, filter: "blur(10px)" }}
-              animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-              transition={{ ...springs.gentle, delay: 0.5 }}
-            >
-              <GlitchText>that feel alive.</GlitchText>
-            </motion.span>
-          </motion.h1>
-
-          {/* Description */}
-          <motion.p
-            variants={item}
-            className="max-w-lg text-text-secondary text-lg leading-relaxed mb-14"
-          >
-            A personal archive exploring interfaces, systems, and ideas.
-            Building tools at the intersection of craft and code.
-          </motion.p>
-
-          {/* CTAs */}
-          <motion.div variants={item} className="flex items-center gap-4 mb-12">
-            <MagneticButton href="/blog" variant="primary">
-              Read the blog
-              <ArrowRight size={15} />
-            </MagneticButton>
-            <MagneticButton href="/about" variant="ghost">
-              About me
-            </MagneticButton>
-          </motion.div>
-
-          {/* Meta row — fills the blank space below CTAs */}
+      <div className="relative z-10 mx-auto max-w-6xl px-6 pt-36 pb-24 w-full h-full flex flex-col">
+        {/* Main content grid — 7/5 split */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start flex-1">
+          {/* Left column: 7 cols */}
           <motion.div
-            variants={item}
-            className="flex items-center gap-6 text-[11px] font-mono text-text-muted"
+            className="lg:col-span-7"
+            variants={container}
+            initial="hidden"
+            animate="show"
           >
-            <div className="flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-neon-green" />
-              <span>Shanghai, CN</span>
-            </div>
-            <div className="w-px h-3 bg-white/[0.1]" />
-            <span>Full-stack Engineer</span>
-            <div className="w-px h-3 bg-white/[0.1]" />
-            <span className="text-brand-purple/60">Open to collaborate</span>
+            {/* Badge */}
+            <motion.div variants={item} className="mb-8">
+              <motion.span
+                className="inline-block px-3.5 py-1 rounded-full bg-brand-purple/8 text-brand-purple text-xs font-mono"
+                whileHover={{ scale: 1.05 }}
+              >
+                personal archive
+              </motion.span>
+            </motion.div>
+
+            {/* Massive title */}
+            <motion.h1
+              variants={item}
+              className="text-5xl sm:text-6xl lg:text-[5.5rem] font-bold tracking-tight leading-[0.95] mb-8"
+            >
+              <motion.span
+                className="inline-block"
+                initial={{ opacity: 0, x: -30, filter: "blur(10px)" }}
+                animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+                transition={{ ...springs.gentle, delay: 0.3 }}
+              >
+                I design and build
+              </motion.span>
+              <br />
+              <span className="relative inline-block h-[1.15em] overflow-hidden align-bottom">
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={currentWord}
+                    initial={{ y: 50, opacity: 0, scale: 0.9, filter: "blur(6px)" }}
+                    animate={{ y: 0, opacity: 1, scale: 1, filter: "blur(0px)" }}
+                    exit={{ y: -50, opacity: 0, scale: 1.1, filter: "blur(6px)" }}
+                    transition={{ type: "spring", stiffness: 250, damping: 22 }}
+                    className="gradient-text absolute"
+                  >
+                    {cyclingWords[currentWord]}
+                  </motion.span>
+                </AnimatePresence>
+              </span>
+              <br />
+              <motion.span
+                className="inline-block"
+                initial={{ opacity: 0, x: -30, filter: "blur(10px)" }}
+                animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+                transition={{ ...springs.gentle, delay: 0.5 }}
+              >
+                <GlitchText>that feel alive.</GlitchText>
+              </motion.span>
+            </motion.h1>
+
+            {/* Description */}
+            <motion.p
+              variants={item}
+              className="max-w-lg text-text-secondary text-lg leading-relaxed mb-12"
+            >
+              A personal archive exploring interfaces, systems, and ideas.
+              Building tools at the intersection of craft and code.
+            </motion.p>
+
+            {/* CTAs */}
+            <motion.div variants={item} className="flex items-center gap-4 mb-10">
+              <MagneticButton href="/blog" variant="primary">
+                Read the blog
+                <ArrowRight size={15} />
+              </MagneticButton>
+              <MagneticButton href="/about" variant="ghost">
+                About me
+              </MagneticButton>
+            </motion.div>
+
+            {/* Meta row */}
+            <motion.div
+              variants={item}
+              className="flex items-center gap-6 text-[11px] font-mono text-text-muted"
+            >
+              <div className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-neon-green" />
+                <span>online</span>
+              </div>
+              <div className="w-px h-3 bg-white/[0.1]" />
+              <span>Full-stack Engineer</span>
+              <div className="w-px h-3 bg-white/[0.1]" />
+              <span className="text-brand-purple/60">Open to collaborate</span>
+            </motion.div>
           </motion.div>
-        </motion.div>
 
-        {/* Floating Dashboard — absolute positioned, offset, rotated */}
-        <motion.div
-          className="hidden lg:block absolute top-[10%] right-[-4%] w-[500px]"
-          style={{ rotate: 2 }}
-          initial={{ opacity: 0, y: 80, filter: "blur(8px)" }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          transition={{ ...springs.gentle, delay: 0.8 }}
-        >
-          <FloatingDashboard recentPosts={recentPosts} />
-        </motion.div>
+          {/* Right column: 5 cols — Dashboard */}
+          <motion.div
+            className="lg:col-span-5 lg:mt-8"
+            initial={{ opacity: 0, y: 80, filter: "blur(8px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            transition={{ ...springs.gentle, delay: 0.8 }}
+          >
+            <FloatingDashboard recentPosts={recentPosts} />
+          </motion.div>
+        </div>
 
-        {/* Scroll indicator — left aligned */}
+        {/* Scroll引导 — Hero底部居中 */}
         <motion.div
-          className="absolute bottom-8 left-6 flex items-center gap-3"
+          className="flex flex-col items-center gap-2 mt-auto pt-12"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.5 }}
         >
+          <div className="w-16 h-px bg-gradient-to-r from-transparent via-brand-purple/40 to-transparent" />
           <motion.div
-            className="w-px h-10 bg-gradient-to-b from-brand-purple/60 to-transparent"
-            animate={{ scaleY: [1, 0.5, 1] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <span className="text-[10px] font-mono text-text-muted uppercase tracking-widest">
-            scroll
-          </span>
+            animate={{ y: [0, 6, 0] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <ChevronDown size={18} className="text-text-muted" />
+          </motion.div>
         </motion.div>
       </div>
     </motion.section>
