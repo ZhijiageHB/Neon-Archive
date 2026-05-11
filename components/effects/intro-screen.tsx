@@ -4,14 +4,16 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export function IntroScreen() {
-  const [show, setShow] = useState(true);
-  const [phase, setPhase] = useState<"typing-neon" | "typing-archive" | "glitch" | "dissolve" | "done">("typing-neon");
+  const [phase, setPhase] = useState<
+    "typing-neon" | "typing-archive" | "glitch" | "dissolve" | "done"
+  >("typing-neon");
   const [neonText, setNeonText] = useState("");
   const [archiveText, setArchiveText] = useState("");
+  const [show, setShow] = useState(true);
 
   // Typing "NEON"
   useEffect(() => {
-    if (phase !== "typing-neon" || !show) return;
+    if (phase !== "typing-neon") return;
     const target = "NEON";
     let i = 0;
     const timer = setInterval(() => {
@@ -24,7 +26,7 @@ export function IntroScreen() {
       }
     }, 100);
     return () => clearInterval(timer);
-  }, [phase, show]);
+  }, [phase]);
 
   // Typing "ARCHIVE"
   useEffect(() => {
@@ -43,89 +45,100 @@ export function IntroScreen() {
     return () => clearInterval(timer);
   }, [phase]);
 
-  // Glitch + dissolve
+  // Glitch → dissolve
   useEffect(() => {
     if (phase !== "glitch") return;
-    const timer = setTimeout(() => setPhase("dissolve"), 300);
-    return () => clearTimeout(timer);
+    const t = setTimeout(() => setPhase("dissolve"), 300);
+    return () => clearTimeout(t);
   }, [phase]);
 
+  // dissolve → fade out overlay → done
   useEffect(() => {
     if (phase !== "dissolve") return;
-    const timer = setTimeout(() => {
-      setPhase("done");
+    const t = setTimeout(() => {
       setShow(false);
-    }, 600);
-    return () => clearTimeout(timer);
+    }, 800);
+    return () => clearTimeout(t);
   }, [phase]);
 
-  if (!show || phase === "done") return null;
+  // After exit animation completes, mark done to stop rendering
+  const handleExitComplete = () => setPhase("done");
+
+  if (phase === "done") return null;
 
   return (
-    <AnimatePresence>
-      <motion.div
-        className="fixed inset-0 z-[100] flex items-center justify-center bg-black"
-        initial={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ type: "spring", stiffness: 200, damping: 25 }}
-      >
-        <div className="text-center">
-          <div
-            className="font-mono text-5xl sm:text-7xl font-bold tracking-wider"
-            style={{
-              color: "#e8e8f0",
-              textShadow:
-                phase === "glitch"
-                  ? "2px 0 #ff0040, -2px 0 #00fff5"
-                  : "0 0 20px rgba(124,58,237,0.4)",
-            }}
-          >
-            <span>{neonText}</span>
-            {phase === "typing-neon" && (
-              <span className="inline-block w-[3px] h-[1em] bg-[#7c3aed] ml-1 animate-blink align-middle" />
-            )}
+    <AnimatePresence onExitComplete={handleExitComplete}>
+      {show && (
+        <motion.div
+          key="intro-screen"
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black"
+          exit={{
+            opacity: 0,
+            filter: "blur(12px) brightness(1.5)",
+            scale: 1.05,
+          }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        >
+          {/* Text content */}
+          <div className="text-center">
+            <div
+              className="font-mono text-5xl sm:text-7xl font-bold tracking-wider"
+              style={{
+                color: "#e8e8f0",
+                textShadow:
+                  phase === "glitch"
+                    ? "2px 0 #ff0040, -2px 0 #00fff5"
+                    : "0 0 20px rgba(124,58,237,0.4)",
+              }}
+            >
+              <span>{neonText}</span>
+              {phase === "typing-neon" && (
+                <span className="inline-block w-[3px] h-[1em] bg-[#7c3aed] ml-1 animate-blink align-middle" />
+              )}
+            </div>
+            <div
+              className="font-mono text-5xl sm:text-7xl font-bold tracking-wider mt-2"
+              style={{
+                color: "#9ca3b8",
+                textShadow:
+                  phase === "glitch"
+                    ? "-2px 0 #ff0040, 2px 0 #00fff5"
+                    : "0 0 20px rgba(0,255,245,0.2)",
+              }}
+            >
+              <span>{archiveText}</span>
+              {phase === "typing-archive" && (
+                <span className="inline-block w-[3px] h-[1em] bg-[#00fff5] ml-1 animate-blink align-middle" />
+              )}
+            </div>
           </div>
-          <div
-            className="font-mono text-5xl sm:text-7xl font-bold tracking-wider mt-2"
-            style={{
-              color: "#9ca3b8",
-              textShadow:
-                phase === "glitch"
-                  ? "-2px 0 #ff0040, 2px 0 #00fff5"
-                  : "0 0 20px rgba(0,255,245,0.2)",
-            }}
-          >
-            <span>{archiveText}</span>
-            {phase === "typing-archive" && (
-              <span className="inline-block w-[3px] h-[1em] bg-[#00fff5] ml-1 animate-blink align-middle" />
-            )}
-          </div>
-        </div>
 
-        {/* Glitch overlay */}
-        {phase === "glitch" && (
-          <motion.div
-            className="absolute inset-0"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: [0, 0.8, 0, 0.5, 0] }}
-            transition={{ duration: 0.3, ease: "linear" }}
-            style={{
-              background:
-                "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(124,58,237,0.03) 2px, rgba(124,58,237,0.03) 4px)",
-            }}
-          />
-        )}
+          {/* Glitch overlay */}
+          {phase === "glitch" && (
+            <motion.div
+              className="absolute inset-0"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: [0, 0.8, 0, 0.5, 0] }}
+              transition={{ duration: 0.3, ease: "linear" }}
+              style={{
+                background:
+                  "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(124,58,237,0.03) 2px, rgba(124,58,237,0.03) 4px)",
+              }}
+            />
+          )}
 
-        {/* Dissolve effect */}
-        {phase === "dissolve" && (
-          <motion.div
-            className="absolute inset-0 bg-black"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ type: "spring", stiffness: 150, damping: 20 }}
-          />
-        )}
-      </motion.div>
+          {/* Dissolve flash */}
+          {phase === "dissolve" && (
+            <motion.div
+              className="absolute inset-0"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: [0, 1, 0.3, 0.8, 0] }}
+              transition={{ duration: 0.8, ease: "easeInOut" }}
+              style={{ background: "#000" }}
+            />
+          )}
+        </motion.div>
+      )}
     </AnimatePresence>
   );
 }
