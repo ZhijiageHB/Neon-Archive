@@ -3,22 +3,11 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const STORAGE_KEY = "neon-archive-intro-seen";
-
 export function IntroScreen() {
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(true);
   const [phase, setPhase] = useState<"typing-neon" | "typing-archive" | "glitch" | "dissolve" | "done">("typing-neon");
   const [neonText, setNeonText] = useState("");
   const [archiveText, setArchiveText] = useState("");
-
-  useEffect(() => {
-    const seen = localStorage.getItem(STORAGE_KEY);
-    if (seen) {
-      setPhase("done");
-      return;
-    }
-    setShow(true);
-  }, []);
 
   // Typing "NEON"
   useEffect(() => {
@@ -66,7 +55,6 @@ export function IntroScreen() {
     const timer = setTimeout(() => {
       setPhase("done");
       setShow(false);
-      localStorage.setItem(STORAGE_KEY, "1");
     }, 600);
     return () => clearTimeout(timer);
   }, [phase]);
