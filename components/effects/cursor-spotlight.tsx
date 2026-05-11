@@ -1,26 +1,22 @@
 "use client";
 
-import { useCallback, useRef, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 
 export function CursorSpotlight() {
-  const elRef = useRef<HTMLDivElement>(null);
+  const [position, setPosition] = useState({ x: -400, y: -400 });
+  const [visible, setVisible] = useState(false);
   const rafRef = useRef<number | undefined>(undefined);
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
     if (rafRef.current) cancelAnimationFrame(rafRef.current);
     rafRef.current = requestAnimationFrame(() => {
-      if (elRef.current) {
-        elRef.current.style.left = `${e.clientX - 300}px`;
-        elRef.current.style.top = `${e.clientY - 300}px`;
-        elRef.current.style.opacity = "1";
-      }
+      setPosition({ x: e.clientX, y: e.clientY });
+      setVisible(true);
     });
   }, []);
 
   const handleMouseLeave = useCallback(() => {
-    if (elRef.current) {
-      elRef.current.style.opacity = "0";
-    }
+    setVisible(false);
   }, []);
 
   useEffect(() => {
@@ -35,13 +31,13 @@ export function CursorSpotlight() {
 
   return (
     <div
-      ref={elRef}
-      className="fixed z-[2] pointer-events-none opacity-0 transition-opacity duration-300"
+      className="fixed z-[2] pointer-events-none transition-opacity duration-300"
       style={{
-        left: -400,
-        top: -400,
+        left: position.x - 300,
+        top: position.y - 300,
         width: 600,
         height: 600,
+        opacity: visible ? 1 : 0,
         background:
           "radial-gradient(circle, rgba(0,255,245,0.05) 0%, transparent 70%)",
         mixBlendMode: "screen",

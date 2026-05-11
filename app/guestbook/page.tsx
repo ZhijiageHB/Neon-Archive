@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-export const revalidate = 30;
 import { PageTransition } from "@/components/layout/page-transition";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { TerminalWindow } from "@/components/ui/terminal-window";

@@ -1,9 +1,7 @@
-export const revalidate = 60;
-
 import {
   getLatestPosts,
   getFeaturedProjects,
-  getLatestGuestbookMessages,
+  getGuestbookMessages,
   getPostMetricsBatch,
 } from "@/lib/supabase/queries";
 import { PageTransition } from "@/components/layout/page-transition";
@@ -19,7 +17,7 @@ export default async function HomePage() {
     await Promise.all([
       getLatestPosts(4).catch(() => []),
       getFeaturedProjects().catch(() => []),
-      getLatestGuestbookMessages(3).catch(() => []),
+      getGuestbookMessages().catch(() => []),
     ]);
 
   const slugs = latestPosts.map((p) => p.slug);
@@ -44,7 +42,7 @@ export default async function HomePage() {
       {postsWithMetrics.length > 0 && (
         <WritingSection posts={postsWithMetrics} />
       )}
-      <GuestbookPreview messages={guestbookMessages} />
+      <GuestbookPreview messages={guestbookMessages.slice(0, 3)} />
     </PageTransition>
   );
 }

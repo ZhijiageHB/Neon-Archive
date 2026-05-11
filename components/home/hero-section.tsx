@@ -1,8 +1,9 @@
 "use client";
 
-import { useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   motion,
+  AnimatePresence,
   useScroll,
   useTransform,
 } from "framer-motion";
@@ -12,14 +13,16 @@ import { MagneticButton } from "@/components/ui/magnetic-button";
 import { Lamp } from "@/components/ui/lamp";
 import { Meteors } from "@/components/effects/meteors";
 import { GlitchText } from "@/components/ui/glitch-text";
-import { CyclingWords } from "@/components/ui/cycling-words";
 import { springs } from "@/lib/animations";
+
+const cyclingWords = ["interfaces", "systems", "stories", "experiments"];
 
 interface HeroSectionProps {
   recentPosts?: Array<{ title: string; published_at: string }>;
 }
 
 export function HeroSection({ recentPosts = [] }: HeroSectionProps) {
+  const [currentWord, setCurrentWord] = useState(0);
   const heroRef = useRef<HTMLElement>(null);
 
   const { scrollYProgress } = useScroll({
@@ -28,6 +31,13 @@ export function HeroSection({ recentPosts = [] }: HeroSectionProps) {
   });
   const heroScale = useTransform(scrollYProgress, [0, 1], [1, 0.92]);
   const heroOpacity = useTransform(scrollYProgress, [0, 1], [1, 0.3]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentWord((prev) => (prev + 1) % cyclingWords.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
   const container = {
     hidden: {},
@@ -54,7 +64,7 @@ export function HeroSection({ recentPosts = [] }: HeroSectionProps) {
     >
       {/* Background layers */}
       <Lamp className="absolute top-0 left-0 right-0" />
-      <Meteors className="absolute inset-0" count={12} />
+      <Meteors className="absolute inset-0" count={20} />
       <motion.div
         className="absolute top-1/4 right-1/4 w-[500px] h-[500px] rounded-full opacity-30 pointer-events-none"
         style={{
@@ -109,7 +119,18 @@ export function HeroSection({ recentPosts = [] }: HeroSectionProps) {
               </motion.span>
               <br />
               <span className="relative inline-block h-[1.15em] overflow-hidden align-bottom">
-                <CyclingWords />
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={currentWord}
+                    initial={{ y: 50, opacity: 0, scale: 0.9, filter: "blur(6px)" }}
+                    animate={{ y: 0, opacity: 1, scale: 1, filter: "blur(0px)" }}
+                    exit={{ y: -50, opacity: 0, scale: 1.1, filter: "blur(6px)" }}
+                    transition={{ type: "spring", stiffness: 250, damping: 22 }}
+                    className="gradient-text absolute"
+                  >
+                    {cyclingWords[currentWord]}
+                  </motion.span>
+                </AnimatePresence>
               </span>
               <br />
               <motion.span

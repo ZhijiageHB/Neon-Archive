@@ -58,6 +58,24 @@ export function Meteors({ className, count = 25 }: MeteorsProps) {
           }}
         />
       ))}
+      <style jsx>{`
+        @keyframes meteor-fly {
+          0% {
+            transform: rotate(var(--angle, 135deg)) translateX(0);
+            opacity: 0;
+          }
+          5% {
+            opacity: 0.8;
+          }
+          70% {
+            opacity: 0.6;
+          }
+          100% {
+            transform: rotate(var(--angle, 135deg)) translateX(600px);
+            opacity: 0;
+          }
+        }
+      `}</style>
     </div>
   );
 }

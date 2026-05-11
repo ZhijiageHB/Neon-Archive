@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useRef, useTransition, useEffect } from "react";
+import { useCallback, useRef, useTransition } from "react";
 import { Search, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -11,7 +11,6 @@ export function SearchInput() {
   const initialQuery = searchParams.get("q") ?? "";
   const inputRef = useRef<HTMLInputElement>(null);
   const [, startTransition] = useTransition();
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const updateSearch = useCallback(
     (value: string) => {
@@ -28,12 +27,6 @@ export function SearchInput() {
     },
     [router, searchParams]
   );
-
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    };
-  }, []);
 
   const clear = () => {
     if (inputRef.current) {
@@ -58,11 +51,7 @@ export function SearchInput() {
           type="text"
           defaultValue={initialQuery}
           placeholder="Search posts..."
-          onChange={(e) => {
-            const value = e.target.value;
-            if (timeoutRef.current) clearTimeout(timeoutRef.current);
-            timeoutRef.current = setTimeout(() => updateSearch(value), 300);
-          }}
+          onChange={(e) => updateSearch(e.target.value)}
           className="w-full rounded-xl border border-border-subtle bg-surface pl-11 pr-10 py-3 text-sm text-text-primary placeholder:text-text-muted outline-none transition-all duration-200 focus:border-brand-purple/30 focus:ring-2 focus:ring-brand-purple/10"
         />
         <AnimatePresence>
