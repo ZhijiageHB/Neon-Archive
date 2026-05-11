@@ -5,6 +5,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { FloatingDashboard } from "@/components/ui/floating-dashboard";
 import { MagneticButton } from "@/components/ui/magnetic-button";
+import { Lamp } from "@/components/ui/lamp";
+import { Meteors } from "@/components/effects/meteors";
+import { GlitchText } from "@/components/ui/glitch-text";
 import { springs } from "@/lib/animations";
 
 const cyclingWords = ["interfaces", "systems", "stories", "experiments"];
@@ -37,6 +40,12 @@ export function HeroSection({ recentPosts = [] }: HeroSectionProps) {
 
   return (
     <section className="relative min-h-[85vh] flex items-center overflow-hidden">
+      {/* Lamp glow at top */}
+      <Lamp className="absolute top-0 left-0 right-0" />
+
+      {/* Meteors background */}
+      <Meteors className="absolute inset-0" count={20} />
+
       {/* Animated gradient orb */}
       <motion.div
         className="absolute top-1/4 right-1/4 w-[500px] h-[500px] rounded-full opacity-30 pointer-events-none"
@@ -109,7 +118,7 @@ export function HeroSection({ recentPosts = [] }: HeroSectionProps) {
                 animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
                 transition={{ ...springs.gentle, delay: 0.5 }}
               >
-                that feel alive.
+                <GlitchText>that feel alive.</GlitchText>
               </motion.span>
             </motion.h1>
 
@@ -137,9 +146,9 @@ export function HeroSection({ recentPosts = [] }: HeroSectionProps) {
           {/* Right: Floating Dashboard */}
           <motion.div
             className="hidden lg:block"
-            initial={{ opacity: 0, x: 60, filter: "blur(12px)" }}
-            animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-            transition={{ ...springs.gentle, delay: 0.6 }}
+            initial={{ opacity: 0, y: 80, filter: "blur(8px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            transition={{ ...springs.gentle, delay: 0.8 }}
           >
             <FloatingDashboard recentPosts={recentPosts} />
           </motion.div>

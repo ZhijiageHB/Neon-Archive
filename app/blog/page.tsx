@@ -5,6 +5,7 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { PostList } from "@/components/blog/post-list";
 import { PostCardSkeleton } from "@/components/ui/skeleton-card";
 import { SearchInput } from "@/components/blog/search-input";
+import { Lamp } from "@/components/ui/lamp";
 
 export const metadata: Metadata = {
   title: "Blog",
@@ -22,7 +23,8 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
 
   return (
     <PageTransition>
-      <div className="mx-auto max-w-5xl px-6 pt-32 pb-20">
+      <div className="relative mx-auto max-w-5xl px-6 pt-32 pb-20">
+        <Lamp className="absolute top-0 left-0 right-0" />
         <SectionHeading
           title="Blog"
           subtitle="Technical writings on interfaces, systems, and engineering"

@@ -6,22 +6,23 @@
    ============================================ */
 
 @theme inline {
-  /* Colors — Light */
-  --color-background: #F7F4EF;
-  --color-surface: #FFFFFF;
-  --color-surface-soft: #F8FAFC;
-  --color-surface-cool: #EEF6FF;
-  --color-border-subtle: rgba(0, 0, 0, 0.06);
-  --color-border-glow: rgba(124, 58, 237, 0.2);
-  --color-text-primary: #101014;
-  --color-text-secondary: #5E6472;
-  --color-text-muted: #9CA3AF;
+  /* Colors — Deep Dark (Linear-inspired) */
+  --color-background: #080810;
+  --color-surface: #0d0d1a;
+  --color-surface-soft: #12121f;
+  --color-surface-cool: #0f0f1e;
+  --color-border-subtle: rgba(255, 255, 255, 0.06);
+  --color-border-glow: rgba(124, 58, 237, 0.3);
+  --color-text-primary: #e8e8f0;
+  --color-text-secondary: #9ca3b8;
+  --color-text-muted: #5a6178;
   --color-brand-purple: #7C3AED;
-  --color-brand-cyan: #06B6D4;
+  --color-brand-cyan: #00fff5;
   --color-brand-blue: #22d3ee;
   --color-brand-violet: #a855f7;
   --color-brand-orange: #F97316;
-  --color-brand-pink: #EC4899;
+  --color-brand-pink: #f059da;
+  --color-neon-green: #00ff88;
 
   /* Fonts */
   --font-sans: "Space Grotesk", var(--font-geist-sans), system-ui, sans-serif;
@@ -89,6 +90,7 @@
 
 html {
   scroll-behavior: smooth;
+  --scroll-vel: 0;
 }
 
 body {
@@ -98,8 +100,8 @@ body {
 }
 
 ::selection {
-  background: rgba(124, 58, 237, 0.2);
-  color: #101014;
+  background: rgba(124, 58, 237, 0.3);
+  color: #e8e8f0;
 }
 
 /* Scrollbar */
@@ -107,19 +109,42 @@ body {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--color-background);
+  background: #080810;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.08);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.15);
 }
 
 /* ============================================
    Noise Overlay
    ============================================ */
+
+/* CRT Scanlines */
+.crt-scanlines {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0px,
+    transparent 1px,
+    rgba(255, 255, 255, 0.035) 1px,
+    rgba(255, 255, 255, 0.035) 2px
+  );
+  background-size: 100% 4px;
+  animation: scanline-scroll 20s linear infinite;
+  mix-blend-mode: overlay;
+}
+
+@keyframes scanline-scroll {
+  from { background-position: 0 0; }
+  to { background-position: 0 100vh; }
+}
 
 .noise-overlay {
   position: fixed;
@@ -142,8 +167,8 @@ body {
   z-index: 0;
   pointer-events: none;
   background-image:
-    linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
   background-size: 60px 60px;
   mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, black 20%, transparent 70%);
   -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, black 20%, transparent 70%);
@@ -154,12 +179,12 @@ body {
    ============================================ */
 
 .prose {
-  --tw-prose-body: #5E6472;
-  --tw-prose-headings: #101014;
+  --tw-prose-body: #9ca3b8;
+  --tw-prose-headings: #e8e8f0;
   --tw-prose-links: #7C3AED;
-  --tw-prose-bold: #101014;
-  --tw-prose-code: #101014;
-  --tw-prose-quotes: #5E6472;
+  --tw-prose-bold: #e8e8f0;
+  --tw-prose-code: #e8e8f0;
+  --tw-prose-quotes: #9ca3b8;
   --tw-prose-quote-borders: #7C3AED;
 }
 
@@ -223,7 +248,7 @@ body {
 
 .prose img {
   border-radius: 12px;
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 /* ============================================
@@ -257,10 +282,16 @@ body {
 }
 
 .glass {
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: rgba(8, 8, 16, 0.75);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(124, 58, 237, 0.15);
+}
+
+/* Velocity-based skew from Lenis */
+.velocity-skew {
+  transform: skewY(calc(var(--scroll-vel) * -0.15deg));
+  will-change: transform;
 }
 
 /* Reduce motion */

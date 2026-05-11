@@ -7,36 +7,40 @@ export function LiquidBackground() {
       <div
         className="absolute -top-1/4 -left-1/4 w-[80vw] h-[80vw] rounded-full animate-float"
         style={{
-          background: "rgba(124, 58, 237, 0.10)",
-          filter: "blur(120px)",
+          background: "rgba(124, 58, 237, 0.20)",
+          filter: "blur(70px)",
           animationDelay: "0s",
+          animationDuration: "10s",
         }}
       />
-      {/* Cyan blob */}
+      {/* Electric Cyan blob */}
       <div
         className="absolute top-1/3 -right-1/4 w-[70vw] h-[70vw] rounded-full animate-float"
         style={{
-          background: "rgba(6, 182, 212, 0.08)",
-          filter: "blur(130px)",
-          animationDelay: "-2s",
+          background: "rgba(0, 255, 245, 0.08)",
+          filter: "blur(70px)",
+          animationDelay: "-3s",
+          animationDuration: "10s",
         }}
       />
-      {/* Orange blob */}
+      {/* Neon Green blob */}
       <div
         className="absolute -bottom-1/4 left-1/3 w-[60vw] h-[60vw] rounded-full animate-float"
         style={{
-          background: "rgba(249, 115, 22, 0.06)",
-          filter: "blur(110px)",
-          animationDelay: "-4s",
+          background: "rgba(0, 255, 136, 0.06)",
+          filter: "blur(70px)",
+          animationDelay: "-6s",
+          animationDuration: "10s",
         }}
       />
       {/* Pink blob */}
       <div
         className="absolute top-1/2 left-1/4 w-[50vw] h-[50vw] rounded-full animate-float"
         style={{
-          background: "rgba(236, 72, 153, 0.05)",
-          filter: "blur(100px)",
-          animationDelay: "-3s",
+          background: "rgba(240, 89, 218, 0.10)",
+          filter: "blur(70px)",
+          animationDelay: "-5s",
+          animationDuration: "10s",
         }}
       />
       {/* Grid overlay */}

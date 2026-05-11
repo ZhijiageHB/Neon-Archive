@@ -2,8 +2,16 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
-import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
+import { useState, useRef } from "react";
+import {
+  motion,
+  AnimatePresence,
+  useScroll,
+  useMotionValueEvent,
+  useMotionValue,
+  useSpring,
+  useTransform,
+} from "framer-motion";
 import { Menu, X, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -14,11 +22,47 @@ const links = [
   { href: "/about", label: "About" },
 ];
 
+const dockSpring = { stiffness: 300, damping: 20 };
+
+function DockItem({
+  mouseX,
+  children,
+  className,
+}: {
+  mouseX: ReturnType<typeof useMotionValue<number>>;
+  children: React.ReactNode;
+  className?: string;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  const distance = useTransform(mouseX, (val) => {
+    if (!ref.current) return 150;
+    const bounds = ref.current.getBoundingClientRect();
+    return val - bounds.left - bounds.width / 2;
+  });
+
+  const scale = useSpring(
+    useTransform(distance, [-150, 0, 150], [1, 1.3, 1]),
+    dockSpring
+  );
+
+  return (
+    <motion.div
+      ref={ref}
+      style={{ scale }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
 export function SiteHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { scrollY } = useScroll();
+  const mouseX = useMotionValue(Infinity);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     setScrolled(latest > 50);
@@ -34,7 +78,7 @@ export function SiteHeader() {
         <motion.nav
           className={cn(
             "flex items-center justify-between rounded-xl glass px-5 py-3 transition-shadow duration-300",
-            scrolled && "shadow-md"
+            scrolled && "shadow-[0_0_0_1px_rgba(124,58,237,0.1),0_8px_32px_rgba(0,0,0,0.4)]"
           )}
           animate={{ paddingTop: scrolled ? 8 : 12, paddingBottom: scrolled ? 8 : 12 }}
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
@@ -47,7 +91,11 @@ export function SiteHeader() {
           </Link>
 
           {/* Desktop */}
-          <ul className="hidden md:flex items-center gap-1">
+          <ul
+            className="hidden md:flex items-center gap-1"
+            onMouseMove={(e) => mouseX.set(e.pageX)}
+            onMouseLeave={() => mouseX.set(Infinity)}
+          >
             {links.map((link) => {
               const isActive =
                 link.href === "/"
@@ -55,28 +103,30 @@ export function SiteHeader() {
                   : pathname.startsWith(link.href);
               return (
                 <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className={cn(
-                      "relative px-3.5 py-1.5 text-sm rounded-lg transition-colors",
-                      isActive
-                        ? "text-text-primary"
-                        : "text-text-secondary hover:text-text-primary"
-                    )}
-                  >
-                    {isActive && (
-                      <motion.span
-                        layoutId="nav-highlight"
-                        className="absolute inset-0 rounded-lg bg-black/[0.06]"
-                        transition={{
-                          type: "spring",
-                          stiffness: 350,
-                          damping: 30,
-                        }}
-                      />
-                    )}
-                    <span className="relative z-10">{link.label}</span>
-                  </Link>
+                  <DockItem mouseX={mouseX}>
+                    <Link
+                      href={link.href}
+                      className={cn(
+                        "relative px-3.5 py-1.5 text-sm rounded-lg transition-colors",
+                        isActive
+                          ? "text-text-primary"
+                          : "text-text-secondary hover:text-text-primary"
+                      )}
+                    >
+                      {isActive && (
+                        <motion.span
+                          layoutId="nav-highlight"
+                          className="absolute inset-0 rounded-lg bg-white/[0.06]"
+                          transition={{
+                            type: "spring",
+                            stiffness: 350,
+                            damping: 30,
+                          }}
+                        />
+                      )}
+                      <span className="relative z-10">{link.label}</span>
+                    </Link>
+                  </DockItem>
                 </li>
               );
             })}
@@ -85,7 +135,7 @@ export function SiteHeader() {
           {/* Desktop search */}
           <Link
             href="/blog"
-            className="hidden md:flex items-center justify-center w-9 h-9 rounded-lg text-text-secondary hover:text-text-primary hover:bg-black/[0.06] transition-colors"
+            className="hidden md:flex items-center justify-center w-9 h-9 rounded-lg text-text-secondary hover:text-text-primary hover:bg-white/[0.06] transition-colors"
             aria-label="Search posts"
           >
             <Search size={17} />
@@ -125,8 +175,8 @@ export function SiteHeader() {
                         className={cn(
                           "block px-4 py-2.5 text-sm rounded-lg transition-colors",
                           isActive
-                            ? "text-text-primary bg-black/[0.06]"
-                            : "text-text-secondary hover:text-text-primary hover:bg-black/[0.03]"
+                            ? "text-text-primary bg-white/[0.06]"
+                            : "text-text-secondary hover:text-text-primary hover:bg-white/[0.03]"
                         )}
                       >
                         {link.label}

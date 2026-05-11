@@ -10,6 +10,7 @@ import { TechMarquee } from "@/components/home/tech-marquee";
 import { FeaturedExperiments } from "@/components/home/featured-experiments";
 import { WritingSection } from "@/components/home/writing-section";
 import { GuestbookPreview } from "@/components/home/guestbook-preview";
+import { FeatureCards } from "@/components/home/feature-cards";
 
 export default async function HomePage() {
   const [latestPosts, featuredProjects, guestbookMessages] =
@@ -33,6 +34,7 @@ export default async function HomePage() {
   return (
     <PageTransition>
       <HeroSection recentPosts={latestPosts} />
+      <FeatureCards />
       <TechMarquee />
       {featuredProjects.length > 0 && (
         <FeaturedExperiments projects={featuredProjects} />

@@ -1,5 +1,6 @@
 import { getPublishedPostsPaginated, searchPublishedPosts, getPostMetricsBatch } from "@/lib/supabase/queries";
 import { PostCard } from "./post-card";
+import { PostListWrapper } from "./post-list-wrapper";
 import { Pagination } from "@/components/ui/pagination";
 
 interface PostListProps {
@@ -51,19 +52,21 @@ export async function PostList({ page = 1, pageSize = 5, search }: PostListProps
 
   return (
     <div>
-      {postsWithMetrics.map((post, i) => (
-        <PostCard
-          key={post.id}
-          slug={post.slug}
-          title={post.title}
-          excerpt={post.excerpt}
-          published_at={post.published_at}
-          tags={post.tags}
-          views={post.views}
-          likes={post.likes}
-          index={i}
-        />
-      ))}
+      <PostListWrapper>
+        {postsWithMetrics.map((post, i) => (
+          <PostCard
+            key={post.id}
+            slug={post.slug}
+            title={post.title}
+            excerpt={post.excerpt}
+            published_at={post.published_at}
+            tags={post.tags}
+            views={post.views}
+            likes={post.likes}
+            index={i}
+          />
+        ))}
+      </PostListWrapper>
       <Pagination currentPage={page} totalPages={totalPages} />
     </div>
   );

@@ -30,6 +30,8 @@ export function PostCard({
 }: PostCardProps) {
   return (
     <motion.div
+      layout
+      layoutId={`post-${slug}`}
       initial={{ opacity: 0, y: 30, filter: "blur(6px)" }}
       whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
       viewport={{ once: true, margin: "-40px" }}
@@ -37,7 +39,7 @@ export function PostCard({
     >
       <Link
         href={`/blog/${slug}`}
-        className="group flex items-start justify-between gap-4 py-6 border-b border-border-subtle hover:border-brand-purple/20 transition-all duration-300 hover:pl-2"
+        className="group flex items-start justify-between gap-4 py-6 border-b border-border-subtle hover:border-brand-purple/20 transition-all duration-300 hover:pl-2 hover:shadow-[0_0_0_1px_rgba(0,255,245,0.15),0_0_20px_rgba(0,255,245,0.08),0_0_60px_rgba(0,255,245,0.03)] hover:rounded-lg"
       >
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-3 mb-2">

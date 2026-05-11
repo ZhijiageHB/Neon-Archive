@@ -33,14 +33,14 @@ export function CursorSpotlight() {
     <div
       className="fixed z-[2] pointer-events-none transition-opacity duration-300"
       style={{
-        left: position.x - 200,
-        top: position.y - 200,
-        width: 400,
-        height: 400,
+        left: position.x - 300,
+        top: position.y - 300,
+        width: 600,
+        height: 600,
         opacity: visible ? 1 : 0,
         background:
-          "radial-gradient(circle, rgba(255,255,255,0.35) 0%, transparent 70%)",
-        mixBlendMode: "soft-light",
+          "radial-gradient(circle, rgba(0,255,245,0.05) 0%, transparent 70%)",
+        mixBlendMode: "screen",
       }}
     />
   );

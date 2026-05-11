@@ -57,7 +57,7 @@ export function ClapButton({ slug, initialLikes }: ClapButtonProps) {
               x: (Math.random() - 0.5) * 40,
             }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
+            transition={{ type: "spring", stiffness: 200, damping: 15 }}
             className="absolute left-1/2 top-1/2 pointer-events-none text-brand-purple"
           >
             <Heart size={12} fill="currentColor" />

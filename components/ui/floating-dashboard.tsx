@@ -8,6 +8,8 @@ import {
   motion,
 } from "framer-motion";
 import { formatDate } from "@/lib/utils";
+import { BorderBeam } from "@/components/ui/border-beam";
+import { ShimmerSweep } from "@/components/ui/shimmer-sweep";
 
 interface FloatingDashboardProps {
   recentPosts?: Array<{ title: string; published_at: string }>;
@@ -49,7 +51,7 @@ export function FloatingDashboard({
   return (
     <motion.div
       ref={ref}
-      className={`glass rounded-2xl p-5 shadow-lg ${className}`}
+      className={`glass rounded-2xl p-5 shadow-lg relative ${className}`}
       style={{
         rotateX,
         rotateY,
@@ -62,6 +64,8 @@ export function FloatingDashboard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.4, type: "spring", stiffness: 100, damping: 20 }}
     >
+      <BorderBeam duration={6} size={300} />
+      <ShimmerSweep interval={4} />
       {/* Live signal */}
       <div className="flex items-center gap-2 mb-4">
         <span className="relative flex h-2.5 w-2.5">
@@ -108,7 +112,7 @@ export function FloatingDashboard({
       </div>
 
       {/* Terminal feed */}
-      <div className="rounded-lg bg-text-primary/[0.03] p-3 font-mono text-xs space-y-1">
+      <div className="rounded-lg bg-white/[0.03] p-3 font-mono text-xs space-y-1">
         {terminalLines.map((line, i) => (
           <p key={i} className="text-text-muted">
             {line}

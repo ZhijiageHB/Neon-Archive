@@ -6,6 +6,9 @@ import { SiteFooter } from "@/components/layout/site-footer";
 import { LiquidBackground } from "@/components/effects/liquid-background";
 import { CursorSpotlight } from "@/components/effects/cursor-spotlight";
 import { NoiseOverlay } from "@/components/effects/noise-overlay";
+import { GridBackground } from "@/components/effects/grid-background";
+import { LenisProvider } from "@/components/effects/lenis-provider";
+import { IntroScreen } from "@/components/effects/intro-screen";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -45,12 +48,16 @@ export default function RootLayout({
       className={`${spaceGrotesk.variable} ${firaCode.variable} antialiased`}
     >
       <body className="min-h-screen bg-background text-text-primary">
-        <LiquidBackground />
-        <CursorSpotlight />
-        <NoiseOverlay />
-        <SiteHeader />
-        <main className="relative z-10 flex-1">{children}</main>
-        <SiteFooter />
+        <LenisProvider>
+          <IntroScreen />
+          <LiquidBackground />
+          <GridBackground />
+          <CursorSpotlight />
+          <NoiseOverlay />
+          <SiteHeader />
+          <main className="relative z-10 flex-1">{children}</main>
+          <SiteFooter />
+        </LenisProvider>
       </body>
     </html>
   );

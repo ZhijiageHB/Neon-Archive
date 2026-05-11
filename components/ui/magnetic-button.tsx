@@ -54,6 +54,7 @@ export function MagneticButton({
       style={{ x: springX, y: springY }}
       whileHover={{ scale: 1.03 }}
       whileTap={{ scale: 0.97 }}
+      transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0 }}
     >
       {children}
     </motion.div>
@@ -63,6 +64,7 @@ export function MagneticButton({
     <motion.div
       ref={ref}
       className="inline-block"
+      style={{ padding: "8px", margin: "-8px" }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >

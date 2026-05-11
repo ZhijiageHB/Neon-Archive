@@ -28,7 +28,7 @@ export function Button({
       onClick={onClick}
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.97 }}
-      transition={{ type: "spring", stiffness: 400, damping: 20 }}
+      transition={{ type: "spring", stiffness: 400, damping: 20, delay: 0 }}
       className={cn(
         "relative inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-medium rounded-xl transition-shadow cursor-pointer",
         variant === "primary" &&
