@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef } from "react";
 import {
   useMotionValue,
   useSpring,
@@ -10,6 +10,7 @@ import {
 import { formatDate } from "@/lib/utils";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { ShimmerSweep } from "@/components/ui/shimmer-sweep";
+import { LiveClock } from "@/components/ui/live-clock";
 
 interface FloatingDashboardProps {
   recentPosts?: Array<{ title: string; published_at: string }>;
@@ -45,24 +46,6 @@ export function FloatingDashboard({
   const ref = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(0.5);
   const mouseY = useMotionValue(0.5);
-  const [currentTime, setCurrentTime] = useState("");
-
-  useEffect(() => {
-    const update = () => {
-      const now = new Date();
-      setCurrentTime(
-        now.toLocaleTimeString("en-US", {
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-          hour12: false,
-        })
-      );
-    };
-    update();
-    const interval = setInterval(update, 1000);
-    return () => clearInterval(interval);
-  }, []);
 
   const springConfig = { stiffness: 150, damping: 20 };
   const rotateX = useSpring(useTransform(mouseY, [0, 1], [8, -8]), springConfig);
@@ -108,9 +91,7 @@ export function FloatingDashboard({
           </span>
           <span className="text-xs font-mono text-text-muted">live signal</span>
         </div>
-        <span className="text-xs font-mono text-brand-cyan/60 tabular-nums">
-          {currentTime}
-        </span>
+        <LiveClock />
       </div>
 
       {/* Status bar */}

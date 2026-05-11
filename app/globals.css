@@ -84,6 +84,23 @@
   50% { opacity: 0; }
 }
 
+@keyframes meteor-fly {
+  0% {
+    transform: rotate(var(--angle, 135deg)) translateX(0);
+    opacity: 0;
+  }
+  5% {
+    opacity: 0.8;
+  }
+  70% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: rotate(var(--angle, 135deg)) translateX(600px);
+    opacity: 0;
+  }
+}
+
 /* ============================================
    Base Styles
    ============================================ */
@@ -283,8 +300,8 @@ body {
 
 .glass {
   background: rgba(8, 8, 16, 0.75);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(12px) saturate(150%);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
   border: 1px solid rgba(124, 58, 237, 0.15);
 }
 

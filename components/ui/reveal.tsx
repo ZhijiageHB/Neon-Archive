@@ -13,10 +13,10 @@ interface RevealProps {
 }
 
 const directionMap = {
-  up: { initial: { opacity: 0, y: 24, filter: "blur(4px)" }, animate: { opacity: 1, y: 0, filter: "blur(0px)" } },
-  down: { initial: { opacity: 0, y: -24, filter: "blur(4px)" }, animate: { opacity: 1, y: 0, filter: "blur(0px)" } },
-  left: { initial: { opacity: 0, x: 24, filter: "blur(4px)" }, animate: { opacity: 1, x: 0, filter: "blur(0px)" } },
-  right: { initial: { opacity: 0, x: -24, filter: "blur(4px)" }, animate: { opacity: 1, x: 0, filter: "blur(0px)" } },
+  up: { initial: { opacity: 0, y: 24, filter: "blur(2px)" }, animate: { opacity: 1, y: 0, filter: "blur(0px)" } },
+  down: { initial: { opacity: 0, y: -24, filter: "blur(2px)" }, animate: { opacity: 1, y: 0, filter: "blur(0px)" } },
+  left: { initial: { opacity: 0, x: 24, filter: "blur(2px)" }, animate: { opacity: 1, x: 0, filter: "blur(0px)" } },
+  right: { initial: { opacity: 0, x: -24, filter: "blur(2px)" }, animate: { opacity: 1, x: 0, filter: "blur(0px)" } },
   none: { initial: { opacity: 0 }, animate: { opacity: 1 } },
 };
 

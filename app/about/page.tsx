@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+export const dynamic = "force-static";
 import { PageTransition } from "@/components/layout/page-transition";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";

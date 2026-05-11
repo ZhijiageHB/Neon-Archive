@@ -25,6 +25,19 @@ export async function getPostBySlug(slug: string) {
   return data;
 }
 
+export async function getPostMetadata(slug: string) {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("posts")
+    .select("title, excerpt, published_at, tags")
+    .eq("slug", slug)
+    .eq("published", true)
+    .single();
+
+  if (error) throw error;
+  return data;
+}
+
 export async function getPostMetrics(slug: string) {
   const supabase = await createClient();
   const { data } = await supabase
@@ -66,7 +79,20 @@ export async function getGuestbookMessages() {
   const { data, error } = await supabase
     .from("guestbook")
     .select("*")
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
+    .limit(50);
+
+  if (error) throw error;
+  return data;
+}
+
+export async function getLatestGuestbookMessages(limit = 3) {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("guestbook")
+    .select("id, name, message, created_at")
+    .order("created_at", { ascending: false })
+    .limit(limit);
 
   if (error) throw error;
   return data;
@@ -133,7 +159,8 @@ export async function getCommentsBySlug(slug: string) {
     .from("comments")
     .select("*")
     .eq("post_slug", slug)
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
+    .limit(100);
 
   if (error) throw error;
   return data ?? [];

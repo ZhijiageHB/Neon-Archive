@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { getPostBySlug, getPostMetrics } from "@/lib/supabase/queries";
+import { getPostBySlug, getPostMetadata, getPostMetrics } from "@/lib/supabase/queries";
+
+export const revalidate = 300;
 import { incrementViews } from "@/lib/supabase/actions";
 import { PageTransition } from "@/components/layout/page-transition";
 import { MarkdownRenderer } from "@/components/blog/markdown-renderer";
@@ -22,7 +24,7 @@ export async function generateMetadata({
 }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   try {
-    const post = await getPostBySlug(slug);
+    const post = await getPostMetadata(slug);
     return {
       title: post.title,
       description: post.excerpt ?? undefined,
@@ -49,21 +51,18 @@ export default async function BlogPostPage({ params }: PageProps) {
   const { slug } = await params;
 
   let post;
+  let metrics = { views: 0, likes: 0 };
   try {
-    post = await getPostBySlug(slug);
+    [post, metrics] = await Promise.all([
+      getPostBySlug(slug),
+      getPostMetrics(slug).catch(() => ({ views: 0, likes: 0 })),
+    ]);
   } catch {
     notFound();
   }
 
   // Increment views (fire-and-forget)
   incrementViews(slug).catch(() => {});
-
-  let metrics = { views: 0, likes: 0 };
-  try {
-    metrics = await getPostMetrics(slug);
-  } catch {
-    // ignore
-  }
 
   const jsonLd = {
     "@context": "https://schema.org",
