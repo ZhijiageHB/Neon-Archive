@@ -294,6 +294,27 @@ body {
   will-change: transform;
 }
 
+/* ============================================
+   Editorial Layout Utilities
+   ============================================ */
+
+.editorial-number {
+  font-size: clamp(4rem, 8vw, 8rem);
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.03);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  user-select: none;
+}
+
+.editorial-heading {
+  font-size: clamp(0.65rem, 1vw, 0.75rem);
+  font-family: var(--font-mono);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
 /* Reduce motion */
 @media (prefers-reduced-motion: reduce) {
   *,
