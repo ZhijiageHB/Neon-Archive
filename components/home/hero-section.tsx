@@ -149,7 +149,7 @@ export function HeroSection({ recentPosts = [] }: HeroSectionProps) {
           </motion.p>
 
           {/* CTAs */}
-          <motion.div variants={item} className="flex items-center gap-4">
+          <motion.div variants={item} className="flex items-center gap-4 mb-12">
             <MagneticButton href="/blog" variant="primary">
               Read the blog
               <ArrowRight size={15} />
@@ -158,11 +158,26 @@ export function HeroSection({ recentPosts = [] }: HeroSectionProps) {
               About me
             </MagneticButton>
           </motion.div>
+
+          {/* Meta row — fills the blank space below CTAs */}
+          <motion.div
+            variants={item}
+            className="flex items-center gap-6 text-[11px] font-mono text-text-muted"
+          >
+            <div className="flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-neon-green" />
+              <span>Shanghai, CN</span>
+            </div>
+            <div className="w-px h-3 bg-white/[0.1]" />
+            <span>Full-stack Engineer</span>
+            <div className="w-px h-3 bg-white/[0.1]" />
+            <span className="text-brand-purple/60">Open to collaborate</span>
+          </motion.div>
         </motion.div>
 
         {/* Floating Dashboard — absolute positioned, offset, rotated */}
         <motion.div
-          className="hidden lg:block absolute top-[12%] right-[-2%] w-[380px]"
+          className="hidden lg:block absolute top-[10%] right-[-4%] w-[500px]"
           style={{ rotate: 2 }}
           initial={{ opacity: 0, y: 80, filter: "blur(8px)" }}
           animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
