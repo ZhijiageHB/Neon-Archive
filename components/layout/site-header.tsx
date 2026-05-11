@@ -20,6 +20,7 @@ const links = [
   { href: "/blog", label: "Blog" },
   { href: "/guestbook", label: "Guestbook" },
   { href: "/about", label: "About" },
+  { href: "/admin/new", label: "Admin" },
 ];
 
 const dockSpring = { stiffness: 300, damping: 20 };
