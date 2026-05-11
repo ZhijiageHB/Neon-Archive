@@ -64,7 +64,7 @@ export function HeroSection({ recentPosts = [] }: HeroSectionProps) {
     >
       {/* Background layers */}
       <Lamp className="absolute top-0 left-0 right-0" />
-      <Meteors className="absolute inset-0" count={20} />
+      <Meteors className="absolute inset-0" count={12} />
       <motion.div
         className="absolute top-1/4 right-1/4 w-[500px] h-[500px] rounded-full opacity-30 pointer-events-none"
         style={{

@@ -36,7 +36,7 @@ export function Meteors({ className, count = 25 }: MeteorsProps) {
   return (
     <div
       className={cn(
-        "absolute inset-0 overflow-hidden pointer-events-none",
+        "absolute inset-0 overflow-hidden pointer-events-none contain-strict",
         className
       )}
     >
@@ -55,27 +55,10 @@ export function Meteors({ className, count = 25 }: MeteorsProps) {
             animation: `meteor-fly ${m.duration}s linear infinite`,
             animationDelay: `${m.delay}s`,
             opacity: 0,
+            willChange: "transform, opacity",
           }}
         />
       ))}
-      <style jsx>{`
-        @keyframes meteor-fly {
-          0% {
-            transform: rotate(var(--angle, 135deg)) translateX(0);
-            opacity: 0;
-          }
-          5% {
-            opacity: 0.8;
-          }
-          70% {
-            opacity: 0.6;
-          }
-          100% {
-            transform: rotate(var(--angle, 135deg)) translateX(600px);
-            opacity: 0;
-          }
-        }
-      `}</style>
     </div>
   );
 }
